@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
-// import * as TaskManager from 'expo-task-manager';
 import state, { getSettings } from '../util/state';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 
 export default function TabLocationScreen() {
@@ -25,6 +25,9 @@ export default function TabLocationScreen() {
         setStatus(status)
       }
       // watch_location();
+      console.log('Keep awake activated')
+      activateKeepAwake(); 
+      console.log('Interval run')
       interval();
     })();
   }, []);
@@ -106,11 +109,9 @@ const fetch_api = async () => {
 
 
 const setStatus = (phrase: string) => {
-    const status = phrase;    
-    console.log("status:", phrase);
-  };
-
-
+  const status = phrase;    
+  console.log("status:", phrase);
+};
 
 
 
@@ -181,9 +182,11 @@ const setStatus = (phrase: string) => {
 
       {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Text style={styles.gps}>api_data: {text_apidata}</Text> */}
+
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
