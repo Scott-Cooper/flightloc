@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
-import * as TaskManager from 'expo-task-manager';
-import settings from '../util/settings';
+// import * as TaskManager from 'expo-task-manager';
+import state, { getSettings } from '../util/state';
 
 
 export default function TabLocationScreen() {
@@ -33,13 +33,13 @@ export default function TabLocationScreen() {
   const interval = async () => {
     const getLoc = setInterval(async () => {
       // console.log('interval running');
-      watch_location();
-    }, 1000)
+      console.log('-----------------------------------------');
+      get_gps();
+    }, 10000)
   }
 
-
-  const watch_location = async () => {
-    // console.log('watch_location running')
+  const get_gps = async () => {
+    console.log('get_gps running  ', Date.now())
     let location = await Location.watchPositionAsync(
       {
         // accuracy:Location.Accuracy.High,
@@ -47,109 +47,70 @@ export default function TabLocationScreen() {
         timeInterval: 1000,
         distanceInterval: 20,
       }, (location_update) => {
-        setLocation(location_update);   
-        console.log('-----------------------------------------');
+        setLocation(location_update);  
+        state.coords.latitude = location_update["coords"]["latitude"];
+        state.coords.longitude = location_update["coords"]["longitude"];
+        state.coords.altitude = location_update["coords"]["altitude"] * 3.28084;
+        state.coords.speed = location_update["coords"]["speed"] * 2.2369;
+        state.coords.heading = location_update["coords"]["heading"];
+        state.coords.accuracy = location_update["coords"]["accuracy"] * 3.28084;
+        state.coords.altitudeAccuracy = location_update["coords"]["altitudeAccuracy"] * 3.28084;
+        state.coords.timestamp = location_update["timestamp"];
+            // fetch_api(); 
         // console.log('update location:', location_update.coords);
-        console.log('update time:', location_update.timestamp);
+        console.log('get_gps   gps time:', location_update.timestamp);
       }
     )
+    console.log('get_gps complete  ' + Date.now())
+    fetch_api(); 
   }
 
 
-  const setStatus = (phrase: string) => {
+// https://flightloc.pythonanywhere.com/loc?key=135&user=Ben%20boot%20barn&lat=37.67125787023003&long=-97.41791096809567&alt=453&heading=786&speed=719.86&accuracy=760&alt_accuracy=306&max_distance=25&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=205&user=Chris%20vortac&lat=37.745261&long=-97.583838&alt=278&heading=982&speed=456.23&accuracy=937&alt_accuracy=379&max_distance=15&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=123&user=Scott%20field&lat=37.668453&long=-97.701083&alt=23&heading=845&speed=125.49&accuracy=166&alt_accuracy=143&max_distance=20&max_lag=20000&min_speed=5
+
+const fetch_api = async () => {
+  console.log('fetch_api running  ' + Date.now())
+  // try {
+    let url = 'https://flightloc.pythonanywhere.com/loc?'
+    url += 'key=' + '327'
+    url += '&user=' + 'Mobile Phone'
+    url += '&lat=' + state.coords.latitude
+    url += '&long=' + state.coords.longitude
+    url += '&alt=' + state.coords.altitude
+    url += '&heading=' + state.coords.heading
+    url += '&speed=' + state.coords.speed
+    url += '&accuracy=' + state.coords.accuracy
+    url += '&alt_accuracy=' + state.coords.altitudeAccuracy
+    url += '&max_distance=50'
+    url += '&max_lag=864000'
+    url += '&min_speed=1'
+
+    // console.log('fetch_api url', url)
+    const response = await fetch(url)
+    console.log('fetch_api status', response.status)
+    // console.log('fetch_api headers', response.headers)
+    // console.log('fetch_api ok', response.ok)
+
+    const apidata = await response.json()
+    state.apidata = apidata
+    // console.log('fetch_api:', apidata)
+    // this.setState({loading: false, posts})
+  // } catch (e) {
+  //   console.log('fetch_api error:', e)
+    // this.setState({loading: false, error: true})
+  // }
+  console.log('fetch_api complete  ' + Date.now())
+}
+
+
+const setStatus = (phrase: string) => {
     const status = phrase;    
     console.log("status:", phrase);
   };
 
 
-  // TaskManager.defineTask('gpstask', ({ data: { locations }, error }) => {
-  //   if (error) {
-  //     // check `error.message` for more details.
-  //     console.log('Error message:', error.message);
-  //     return;
-  //   }
-  //   setLocation(locations[0]);   
-  //   console.log('Received new location', locations);
-  // });
-
-
-   // GPS thing
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     // let { status } = await Location.requestBackgroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-  //       return;
-  //     }
-
-  //     // let location = await Location.getCurrentPositionAsync({});
-  //     let location2 = await Location.startLocationUpdatesAsync('gpstask');
-  //     console.log("got GPS.");
-
-
-
-  //       let location = await Location.watchPositionAsync(
-  //       {
-  //         accuracy:Location.Accuracy.High,
-  //         timeInterval: 10000,
-  //         distanceInterval: 80,
-  //       },
-  //       (location_update) => {
-  //         console.log('update location!', location_update.coords);
-  //       }
-  //     )
-
-
-  //     // setLocation(location);      
-  //   })();
-  // }, []);
-
-
-
-
-  // const LocationCallback = () => {
-  //   console.log("got location callback.");
-  // };
-    
-
-
-
-  // const TASK_FETCH_LOCATION = 'TASK_FETCH_LOCATION';
-
-  // // 1 define the task passing its name and a callback that will be called whenever the location changes
-  // TaskManager.defineTask(TASK_FETCH_LOCATION, async ({ data: { locations }, error }) => {
-  //   if (error) {
-  //     console.error(error);
-  //     return;
-  //   }
-  //   const [location] = locations;
-  //   try {
-  //     const url = `https://<your-api-endpoint>`;
-  //     // await axios.post(url, { location }); // you should use post instead of get to persist data on the backend
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // });
-
-  // // 2 start the task
-  // Location.startLocationUpdatesAsync(TASK_FETCH_LOCATION, {
-  //   accuracy: Location.Accuracy.Highest,
-  //   distanceInterval: 1, // minimum change (in meters) betweens updates
-  //   deferredUpdatesInterval: 1000, // minimum interval (in milliseconds) between updates
-  //   // foregroundService is how you get the task to be updated as often as would be if the app was open
-  //   foregroundService: {
-  //     notificationTitle: 'Using your location',
-  //     notificationBody: 'To turn off, go back to the app and switch something off.',
-  //   },
-  // });
-
-  // // 3 when you're done, stop it
-  // Location.hasStartedLocationUpdatesAsync(TASK_FETCH_LOCATION).then((value) => {
-  //   if (value) {
-  //     Location.stopLocationUpdatesAsync(TASK_FETCH_LOCATION);
-  //   }
-  // });
 
 
 
@@ -162,6 +123,9 @@ export default function TabLocationScreen() {
   let text_accuracy = '';
   let text_altitudeAccuracy = '';
   let text_time = '';
+  let text_apidata = '';
+  let text_pretty_apidata = '';
+
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
@@ -175,35 +139,48 @@ export default function TabLocationScreen() {
     text_accuracy = JSON.stringify(location["coords"]["accuracy"] * 3.28084);
     text_altitudeAccuracy = JSON.stringify(location["coords"]["altitudeAccuracy"] * 3.28084);
     text_time = JSON.stringify(location["timestamp"]);
+    text_apidata = JSON.stringify(state.apidata);
 
-    settings.coords.latitude = location["coords"]["latitude"];
-    settings.coords.longitude = location["coords"]["longitude"];
-    settings.coords.altitude = location["coords"]["altitude"] * 3.28084;
-    settings.coords.speed = location["coords"]["speed"] * 2.2369;
-    settings.coords.heading = location["coords"]["heading"];
-    settings.coords.accuracy = location["coords"]["accuracy"] * 3.28084;
-    settings.coords.altitudeAccuracy = location["coords"]["altitudeAccuracy"] * 3.28084;
-    settings.coords.timestamp = location["timestamp"];
+    const p = state.apidata
+    for (let key in p) {
+      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ", "
+    }
+    console.log(text_pretty_apidata);
+
+    // state.coords.latitude = location["coords"]["latitude"];
+    // state.coords.longitude = location["coords"]["longitude"];
+    // state.coords.altitude = location["coords"]["altitude"] * 3.28084;
+    // state.coords.speed = location["coords"]["speed"] * 2.2369;
+    // state.coords.heading = location["coords"]["heading"];
+    // state.coords.accuracy = location["coords"]["accuracy"] * 3.28084;
+    // state.coords.altitudeAccuracy = location["coords"]["altitudeAccuracy"] * 3.28084;
+    // state.coords.timestamp = location["timestamp"];
+    // console.log(state.coords)
+    // console.log(state)
   }
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Location</Text> */}
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
-      {/* <Text style={styles.gps}>{text}</Text> */}
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {/* <View style={styles.separator} /> */}
       <Text style={styles.gps}>latitude: {text_lat}</Text>
       <Text style={styles.gps}>longitude: {text_long}</Text>
-      <Text style={styles.gps}>altitude: {text_alt} feet</Text>
-      <Text style={styles.gps}>altitudeAccuracy: {text_alt} feet</Text>
-      <Text style={styles.gps}>accuracy: {text_accuracy} feet</Text>
-      <Text style={styles.gps}>speed: {text_speed} mph</Text>
-      <Text style={styles.gps}>heading: {text_heading}</Text>
+      <Text style={styles.gps}>altitude: {parseFloat(text_alt).toFixed(1)} feet</Text>
+      <Text style={styles.gps}>altitudeAccuracy: {parseFloat(text_altitudeAccuracy).toFixed(1)} feet</Text>
+      <Text style={styles.gps}>accuracy: {parseFloat(text_accuracy).toFixed(1)} feet</Text>
+      <Text style={styles.gps}>speed: {parseFloat(text_speed).toFixed(2)} mph</Text>
+      <Text style={styles.gps}>heading: {parseFloat(text_heading).toFixed(0)}</Text>
       <Text style={styles.gps}>time: {text_time} milliseconds</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.separator} />
-      {/* <Button title="Update GPS" onPress={null} /> */}
+
+      {/* <View style={styles.separator} />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.gps}>{text}</Text> */}
+
+      <Text style={styles.gps}>{text_pretty_apidata}</Text>
+
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.gps}>api_data: {text_apidata}</Text> */}
     </View>
   );
 }

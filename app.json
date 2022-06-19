@@ -1,13 +1,11 @@
 {
   "expo": {
-    "name": "flightloc",
+    "name": "Flightloc",
     "slug": "flightloc",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    // "userInterfaceStyle": "automatic",
-    // "userInterfaceStyle": "light",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -27,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dullbits.flightloc"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

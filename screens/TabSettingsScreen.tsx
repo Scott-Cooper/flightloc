@@ -1,15 +1,14 @@
 import { Text, View } from '../components/Themed';
-import { StyleSheet, ScrollView, Switch, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, Switch, TextInput, Button} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
-import { Button } from 'react-native';
-import settings, { ddText } from '../util/settings';
+// import settings from '../util/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import state from '../util/state';
+import { saveSettings } from '../util/storage';
 
 export default function TabSettingsScreen() {
 
-  // used for switch
   const [isEnabled1, setIsEnabled1] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
   const [isEnabled3, setIsEnabled3] = useState(false);
@@ -17,65 +16,113 @@ export default function TabSettingsScreen() {
   const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
   const toggleSwitch3 = () => setIsEnabled3(previousState => !previousState);
 
-  // used for sliders
+  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(6);
   const [sliderValue, setSliderValue] = useState(15);
-  const [sliderVolume, setSliderVolume] = useState(7);
-  const [sliderRate, setSliderRate] = useState(1.0);
-  const [sliderPitch, setSliderPitch] = useState(1.0);
+  const [speechVoice, setSpeechVoice] = useState(7);
+  const [speechRate, setSpeechRate] = useState(1.0);
+  const [speechPitch, setSpeechPitch] = useState(1.0);
 
 
   useEffect(() => {
-    // Run one during load
+    // Run once during load
     retreive_all_settings();
   }, []);
 
 
   const save_all_settings = async() => {
-    // console.log('save_all_settings, started')
-    save_setting(sliderValue, "sliderValue")
-    save_setting(sliderVolume, "sliderVolume")
-    save_setting(sliderRate, "sliderRate")
-    save_setting(sliderPitch, "sliderPitch")
+    // let allSettings = {
+    //   isEnabled1: isEnabled1,
+    //   isEnabled2: isEnabled2,
+    //   isEnabled3: isEnabled3,
+    //   sliderValue: sliderValue,
+    //   speechVoice: speechVoice,
+    //   speechRate: speechRate,
+    //   speechPitch: speechPitch
+    // };
+
+    state.settings.isEnabled1 = isEnabled1
+    state.settings.isEnabled2 = isEnabled2;
+    state.settings.isEnabled3 = isEnabled3;
+    state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute;
+    state.settings.sliderValue = sliderValue;
+    state.settings.speechVoice = speechVoice;
+    state.settings.speechRate = speechRate;
+    state.settings.speechPitch = speechPitch;
+
+    // console.log("allsettings: ", allSettings);
+    console.log("settings.settings: ", state.settings);
+    saveSettings(state.settings, "settings")
   }
-  
+
 
   const retreive_all_settings = async() => {
-    // console.log('retreive_all_settings, started')
-    retreive_setting(setSliderValue, "sliderValue")
-    retreive_setting(setSliderVolume, "sliderVolume")
-    retreive_setting(setSliderRate, "sliderRate")
-    retreive_setting(setSliderPitch, "sliderPitch")
+    setIsEnabled1(state.settings.isEnabled1);
+    setIsEnabled2(state.settings.isEnabled2);
+    setIsEnabled3(state.settings.isEnabled3);
+    setSliderValue(state.settings.sliderValue);
+    setSpeechVoice(state.settings.speechVoice);
+    setSpeechRate(state.settings.speechRate);
+    setSpeechPitch(state.settings.speechPitch);
   }
 
-
-  const save_setting = async(varName: any, keyName: string) => {
+  const retreive_all_settings_old = async() => {
     try {
-      const jsonValue = JSON.stringify(varName)
-      console.log("save_setting,", keyName, typeof varName, varName, jsonValue)
-      // console.log("save_setting,", keyName, JSON.stringify(jsonValue, null, 2))
-      AsyncStorage.setItem(keyName, jsonValue)
-    } catch (e) {
-      console.log('save_setting, failed: ', e)
-    }
-  }
-
-  
-  const retreive_setting = async (setFunc: any, keyName: string) => {
-    try {
-      let jsonValue = await AsyncStorage.getItem(keyName)
-      jsonValue != null ? JSON.parse(jsonValue) : null;
-      if(jsonValue !== null) {
-        setFunc(jsonValue)
+      let jsonValue = await AsyncStorage.getItem("settings")
+      
+      if(jsonValue != null) {
+        console.log("retreive_all_settings on settings tab: ", jsonValue);
+        let settings  = (JSON.parse(jsonValue));
+        setIsEnabled1(settings.isEnabled1);
+        setIsEnabled2(settings.isEnabled2);
+        setIsEnabled3(settings.isEnabled3);
+        setSliderValue(settings.sliderValue);
+        setSpeechVoice(settings.speechVoice);
+        setSpeechRate(settings.speechRate);
+        setSpeechPitch(settings.speechPitch);
       }
-      console.log("retreive_setting,", keyName, JSON.stringify(jsonValue, null, 2) );
     } catch(e) {
       console.log('retreive_setting, failed: ', e)
     }
+
+      // retreive_setting(isEnabled1, setIsEnabled1, "isEnabled1")
+    // retreive_setting(isEnabled2, setIsEnabled2, "isEnabled2")
+    // retreive_setting(isEnabled3, setIsEnabled3, "isEnabled3")
+    // retreive_setting(slideGpsUpdatesPerMinute, setSliderGpsUpdatesPerMinute, "slideGpsUpdatesPerMinute")
+    // retreive_setting(sliderValue, setSliderValue, "sliderValue")
+    // retreive_setting(sliderVolume, setSliderVolume, "sliderVolume")
+    // retreive_setting(sliderRate, setSliderRate, "sliderRate")
+    // retreive_setting(sliderPitch, setSliderPitch, "sliderPitch")
   }
 
 
-  console.log("render TabTestScreen")
-  settings.sliderPitch = sliderPitch
+
+
+  
+  const retreive_setting = async (varName: any, setFunc: any, keyName: string) => {
+    // try {
+      let jsonValue = await AsyncStorage.getItem(keyName)
+      console.log("jjj", jsonValue);
+      // jsonValue != null ? JSON.parse(jsonValue) : null;
+
+      if(jsonValue != null) {
+        // setFunc(eval(jsonValue))
+        console.log("got here 333");
+        // setAllSettings(JSON.parse(jsonValue))
+      }
+
+      // console.log("retreive_setting,", keyName, JSON.stringify(jsonValue, null, 2) );
+      
+      console.log("retreive_setting,", keyName, JSON.stringify(jsonValue) );
+      // console.log("iii: ", allSettings);
+    // } catch(e) {
+    //   console.log('retreive_setting, failed: ', e)
+    // }
+  }
+
+
+  console.log("render TabSettingsScreen");
+  // console.log("allsettings:", allSettings);
+  
 
   return (
     <View style={styles.container}>
@@ -151,15 +198,15 @@ export default function TabSettingsScreen() {
         <View style={styles.section}>
           <Slider
             style={styles.slider}
-            minimumValue={6}
-            maximumValue={120}
+            minimumValue={3}
+            maximumValue={60}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={60}
+            value={gpsUpdatesPerMinute}
             step={1}
-            onValueChange={ (sliderValue) => setSliderValue(sliderValue) }
+            onValueChange={ (slideGpsUpdatesPerMinute) => setGpsUpdatesPerMinute(slideGpsUpdatesPerMinute) }
           />
-          <Text style={styles.slider_values}>{sliderValue}</Text>
+          <Text style={styles.slider_values}>{gpsUpdatesPerMinute}</Text>
         </View>
 
         <Text style={styles.slider_label}>Seconds between location status</Text>
@@ -170,29 +217,29 @@ export default function TabSettingsScreen() {
             maximumValue={120}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={5}
+            value={sliderValue}
             step={1}
             onValueChange={ (sliderValue) => setSliderValue(sliderValue) }
           />
           <Text style={styles.slider_values}>{sliderValue}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Voice volume  (default 1.0)</Text>
+        <Text style={styles.slider_label}>Speech Voice  (default 1)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
             minimumValue={0}
-            maximumValue={10}
+            maximumValue={47}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={sliderVolume}
-            step={0.1}
-            onValueChange={ (sliderVolume) => setSliderVolume(sliderVolume) }
+            value={speechVoice}
+            step={1}
+            onValueChange={ (speechVoice) => setSpeechVoice(speechVoice) }
           />
-          <Text style={styles.slider_values}>{sliderVolume}</Text>
+          <Text style={styles.slider_values}>{speechVoice}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Voice rate  (default 1.0)</Text>
+        <Text style={styles.slider_label}>Speech Rate  (default 1.0)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
@@ -200,14 +247,14 @@ export default function TabSettingsScreen() {
             maximumValue={3.0}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={sliderRate}
+            value={speechRate}
             step={0.01}
-            onValueChange={ (sliderRate) => setSliderRate(sliderRate) }
+            onValueChange={ (sliderRate) => setSpeechRate(sliderRate) }
           />
-          <Text style={styles.slider_values}>{sliderRate}</Text>
+          <Text style={styles.slider_values}>{speechRate}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Voice pitch  (default 1.0)</Text>
+        <Text style={styles.slider_label}>Speech Pitch  (default 1.0)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
@@ -215,15 +262,16 @@ export default function TabSettingsScreen() {
             maximumValue={3.0}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={sliderPitch}
+            value={speechPitch}
             step={0.01}
-            onValueChange={ (sliderPitch) => setSliderPitch(sliderPitch) }
+            onValueChange={ (sliderPitch) => setSpeechPitch(sliderPitch) }
           />
-          <Text style={styles.slider_values}>{sliderPitch}</Text>
+          <Text style={styles.slider_values}>{speechPitch}</Text>
         </View>
 
         <View style={styles.separator} lightColor="#333" darkColor="#444" />
         <Button title="Save" onPress={save_all_settings} />
+        <View style={styles.separator} lightColor="#333" darkColor="#444" />
       </ScrollView>
     </View>
   );
@@ -239,6 +287,7 @@ const styles = StyleSheet.create({
     // marginVertical: 32,
     // alignItems: 'center',
     // justifyContent: 'center',
+    // marginRight: 35,
   },
   title: {
     fontSize: 20,
@@ -266,6 +315,8 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 14,
+    // marginLeft: 15,
+    // marginRight: 35,
   },
   input: {
     fontSize: 14,
@@ -288,9 +339,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: -30,
     // backgroundColor: '#f774',
-  },
-  checkbox: {
-    margin: 10,
   },
 });
 

@@ -2,50 +2,85 @@ import { StyleSheet } from 'react-native';
 import { Button } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Speech from 'expo-speech';
-import React, { useState, useEffect } from 'react';
+import state, { getSettings } from '../util/state';
+
 
 export default function TabSpeechScreen() {
-  const [errorMsg, setErrorMsg] = useState(null);
-  
 
   const speak1 = () => {
-    const thingToSay = 'Chris, 1.2 miles at 4 oclock high.  Mark 2.0 miles at 12 oclock level.';    
-    Speech.speak(thingToSay, { pitch: 1.0, rate: 1.2 } );
-    console.log("speak1: ", thingToSay);
+    speakAnything('speak1', 'Chris, 1.2 miles at 4 oclock high.  Mark 2.0 miles at 12 oclock level.')
   };
-
 
   const speak2 = () => {
-    const thingToSay = 'L Z is 2.4 miles at 7 oclock.  24 minutes till sunset.';    
-    Speech.speak(thingToSay, { pitch: 1.0, rate: 1.2 } );
-    console.log("speak2: ", thingToSay);
+    speakAnything('speak2', 'Hey Scott, L Z is 2.4 miles at 7 oclock.  24 minutes till sunset.')
   };
-
 
   const speak3 = () => {
-    const thingToSay = 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.';    
-    Speech.speak(thingToSay, { pitch: 1.0, rate: 1.2 } );
-    console.log("speak3: ", thingToSay);
+    speakAnything('speak3', 'Ben is offline')
+  };
+  
+  const speak4 = () => {
+    speakAnything('speak4', 'Current information is not available.')
+  };
+  
+  const speak5 = () => {
+    speakAnything('speak5', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.')
   };
 
-
-  const speakAnything = (phrase: string) => {
-    const thingToSay = phrase;    
-    Speech.speak(thingToSay, { pitch: 1.0, rate: 1.2 } );
-    console.log("speakAnything");
+  const speakAnything = (func: string, phrase: string) => {
+    // let s = getSettings();
+    let s = state.settings;
+    let x = Speech.VoiceQuality;
+    // console.log("voicequaliity:", x);
+    let v = getVoices();
+    Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate});
+    Speech.getAvailableVoicesAsync
+    console.log(func, ":", phrase);
   };
 
+  const getVoices = async () => {
+    const availableVoices = await Speech.getAvailableVoicesAsync();
+    
+    let filtered = availableVoices.filter(function(value, index, arr){ 
+        return value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU";
+    });
+
+    // console.log("filtered:", filtered);
+    console.log("filtered:", filtered.length);
+    // console.log("availableVoices:", availableVoices);
+    return(filtered)
+  }
+
+  // "en-au-x-aua-network"
+
+// "en-AU-language"
+// "uk-UA-language"
+// "en-us-x-tpf-local"
+// "en-in-x-end-network"
+// "en-au-x-aua-network"
+// "en-GB-language"
+// "en-in-x-cxx-local"
+// "en-gb-x-gba-network"
+// "en-au-x-afh-network"
+// "en-us-x-sfg-network"
+// "en-au-x-aud-local"
+// "en-gb-x-gbc-network"
+// "en-us-x-sfg-local"
+// "en-in-x-ene-local"
 
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Test</Text> */}
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Button title="Speak area" onPress={speak1} />
+      <Button title="Area" onPress={speak1} />
       <View style={styles.separator} />
-      <Button title="Speak lz" onPress={speak2} />
+      <Button title="Landing Zone" onPress={speak2} />
       <View style={styles.separator} />
-      <Button title="Speak Danger" onPress={speak3} />
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Button title="Offline" onPress={speak3} />
+      <View style={styles.separator} />
+      <Button title="No info" onPress={speak4} />
+      <View style={styles.separator} />
+      <Button title="Danger" onPress={speak5} />
+      <View style={styles.separator} />
     </View>
   );
 }
@@ -64,8 +99,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 5,
-    height: 2,
+    marginVertical: 8,
     width: '100%',
   },
 });
