@@ -1,20 +1,17 @@
 import { StyleSheet } from 'react-native';
-
 import { Text, View } from '../components/Themed';
 
-export default function TabTwoScreen() {
 
-  for (let i = 0; i < 5; i++) {
-    console.log("Got here ", i)
-  }
+export default function TabStuffScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.title}>Stuff goes here</Text>
     </View>
   );
+
 }
+
 
 const styles = StyleSheet.create({
   container: {

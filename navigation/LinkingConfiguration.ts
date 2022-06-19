@@ -20,11 +20,6 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabHomeScreen: 'home',
             },
           },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
           TabSettings: {
             screens: {
               TabSettingsScreen: 'settings',
@@ -38,6 +33,11 @@ const linking: LinkingOptions<RootStackParamList> = {
           TabSpeech: {
             screens: {
               TabSpeechScreen: 'speech',
+            },
+          },
+          TabStuff: {
+            screens: {
+              TabStuffScreen: 'stuff',
             },
           },
           TabTest: {

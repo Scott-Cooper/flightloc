@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import TabStuffScreen from '../screens/TabStuffScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
 import TabLocationScreen from '../screens/TabLocationScreen';
 import TabSpeechScreen from '../screens/TabSpeechScreen';
@@ -71,14 +71,6 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="TabSettings"
         component={TabSettingsScreen}
         options={{
@@ -100,6 +92,14 @@ function BottomTabNavigator() {
         options={{
           title: 'Speech',
           tabBarIcon: ({ color }) => <TabBarIcon name="volume-up" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabStuff"
+        component={TabStuffScreen}
+        options={{
+          title: 'Stuff',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
       <BottomTab.Screen
