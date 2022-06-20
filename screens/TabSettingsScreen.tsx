@@ -9,6 +9,8 @@ import { saveSettings } from '../util/storage';
 
 export default function TabSettingsScreen() {
 
+  const [keycode, setkeycode] = useState('');
+  const [user, setuser] = useState('Unknown');
   const [isEnabled1, setIsEnabled1] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
   const [isEnabled3, setIsEnabled3] = useState(false);
@@ -29,17 +31,9 @@ export default function TabSettingsScreen() {
   }, []);
 
 
-  const save_all_settings = async() => {
-    // let allSettings = {
-    //   isEnabled1: isEnabled1,
-    //   isEnabled2: isEnabled2,
-    //   isEnabled3: isEnabled3,
-    //   sliderValue: sliderValue,
-    //   speechVoice: speechVoice,
-    //   speechRate: speechRate,
-    //   speechPitch: speechPitch
-    // };
-
+  function save_all_settings() {
+    state.settings.keycode = keycode
+    state.settings.user = user
     state.settings.isEnabled1 = isEnabled1
     state.settings.isEnabled2 = isEnabled2;
     state.settings.isEnabled3 = isEnabled3;
@@ -50,15 +44,18 @@ export default function TabSettingsScreen() {
     state.settings.speechPitch = speechPitch;
 
     // console.log("allsettings: ", allSettings);
-    console.log("settings.settings: ", state.settings);
-    saveSettings(state.settings, "settings")
+    console.log("save_all_settings:  state.settings: ", state.settings);
+    saveSettings()
   }
 
 
-  const retreive_all_settings = async() => {
+  function retreive_all_settings() {
+    setkeycode(state.settings.keycode);
+    setuser(state.settings.user);
     setIsEnabled1(state.settings.isEnabled1);
     setIsEnabled2(state.settings.isEnabled2);
     setIsEnabled3(state.settings.isEnabled3);
+    setGpsUpdatesPerMinute(state.settings.gpsUpdatesPerMinute);
     setSliderValue(state.settings.sliderValue);
     setSpeechVoice(state.settings.speechVoice);
     setSpeechRate(state.settings.speechRate);
@@ -95,9 +92,6 @@ export default function TabSettingsScreen() {
   }
 
 
-
-
-  
   const retreive_setting = async (varName: any, setFunc: any, keyName: string) => {
     // try {
       let jsonValue = await AsyncStorage.getItem(keyName)
@@ -121,7 +115,7 @@ export default function TabSettingsScreen() {
 
 
   console.log("render TabSettingsScreen");
-  // console.log("allsettings:", allSettings);
+  // console.log("state:", state);
   
 
   return (
@@ -132,14 +126,29 @@ export default function TabSettingsScreen() {
       <ScrollView style={styles.scrollView}>
 
         <View style={styles.section}>
-        <Text style={styles.paragraph}>Call sign </Text>
-
+          <Text style={styles.paragraph}>Key code </Text>
           <TextInput
             style={styles.input}
-            // onChangeText={onChangeNumber}
-            // onChangeText={value => this.setState({ comment: value })}
-            // value={number}
-            placeholder="Pilot Name               "
+            // onChangeText={text => on_change_keycode(text)}
+            onChangeText={text => setkeycode(text)}
+            value={keycode}
+            placeholder="Key code              "
+            placeholderTextColor='#666'
+            // selectionColor='#f00'
+            // underlineColorAndroid='#f00'
+            keyboardType="default"
+          />
+        </View>
+
+        <View style={styles.separator}/>
+
+        <View style={styles.section}>
+          <Text style={styles.paragraph}>Pilot name </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setuser(text)}
+            value={user}
+            placeholder="Pilot's first name               "
             placeholderTextColor='#666'
             // selectionColor='#f00'
             // underlineColorAndroid='#f00'
@@ -182,15 +191,6 @@ export default function TabSettingsScreen() {
           <Text style={styles.paragraph}>In the mean time you can get something cool to drink.  If you prefer to dine alone, just call ahead and let us know.</Text>
           <Text>{isEnabled3 ? ', On' : ', Off'}</Text>
         </View>
-
-
-        <View style={styles.separator} lightColor="#333" darkColor="#444" />
-
-        <Text style={styles.text}>
-        The USHGA’s self-regulation program lacks the legal authority to enforce requirements
-        to ensure the safety of others. There is no requirement for any hang glider operator
-        to be a member of the USHGA.
-        </Text>    
 
         <View style={styles.separator} lightColor="#333" darkColor="#444" />
 

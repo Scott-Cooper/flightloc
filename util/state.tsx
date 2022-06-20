@@ -1,6 +1,7 @@
-
 export default {
   settings: {
+    keycode: '',
+    user: 'Unknown',
     isEnabled1: true,
     isEnabled2: true,
     isEnabled3: true,
@@ -19,21 +20,9 @@ export default {
     accuracy: 6,
     altitudeAccuracy: 7,
     timestamp: 8,
-    dog: 9,
   },
+  still_speaking: false,
   apidata: {
   }
 }
-
-// default values to set the type
-// let settings = {
-//   isEnabled1: true,
-//   isEnabled2: true,
-//   isEnabled3: true,
-//   slideGpsUpdatesPerMinutea: 1,
-//   sliderValue: 1,
-//   speechVoice: 1,
-//   speechRate: 1,
-//   speechPitch: 1
-// }
 

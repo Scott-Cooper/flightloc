@@ -1,9 +1,17 @@
+// https://flightloc.pythonanywhere.com/dump_it_all_or_else
+// https://flightloc.pythonanywhere.com/clear_it_all_or_else
+// https://flightloc.pythonanywhere.com/loc?key=135&user=Boot%20barn&lat=37.67125787023003&long=-97.41791096809567&alt=1250&heading=186&speed=19.86&accuracy=23.2&alt_accuracy=30&max_distance=25&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=205&user=Vortac&lat=37.745261&long=-97.583838&alt=1278&heading=85&speed=31.23&accuracy=37&alt_accuracy=29.6&max_distance=19&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=123&user=Field&lat=37.668453&long=-97.701083&alt=1223&heading=45&speed=25.49&accuracy=66&alt_accuracy=14.3&max_distance=20&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=117&user=Norwich&lat=37.457929&long=-97.835638&alt=1200&heading=0&speed=24.3&accuracy=16.2&alt_accuracy=13&max_distance=20&max_lag=20000&min_speed=5
+
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
-import state, { getSettings } from '../util/state';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import state from '../util/state';
+import { speakAnything }  from './TabSpeechScreen';
 
 
 export default function TabLocationScreen() {
@@ -12,8 +20,8 @@ export default function TabLocationScreen() {
   // const [time, setTime] = useState(Date.now());
   
 
-
-  //useEffect executes when the screen is loaded, only happens once
+  // useEffect executes when the screen is loaded, only happens once
+  // Gets rerun during refresh, so it will get doubled up in debug mode
   useEffect(() => {
     (async () => {
       let { status } = await  Location.requestForegroundPermissionsAsync();
@@ -38,7 +46,7 @@ export default function TabLocationScreen() {
       // console.log('interval running');
       console.log('-----------------------------------------');
       get_gps();
-    }, 10000)
+    }, 3000)
   }
 
   const get_gps = async () => {
@@ -59,7 +67,6 @@ export default function TabLocationScreen() {
         state.coords.accuracy = location_update["coords"]["accuracy"] * 3.28084;
         state.coords.altitudeAccuracy = location_update["coords"]["altitudeAccuracy"] * 3.28084;
         state.coords.timestamp = location_update["timestamp"];
-            // fetch_api(); 
         // console.log('update location:', location_update.coords);
         console.log('get_gps   gps time:', location_update.timestamp);
       }
@@ -68,17 +75,13 @@ export default function TabLocationScreen() {
     fetch_api(); 
   }
 
-
-// https://flightloc.pythonanywhere.com/loc?key=135&user=Ben%20boot%20barn&lat=37.67125787023003&long=-97.41791096809567&alt=453&heading=786&speed=719.86&accuracy=760&alt_accuracy=306&max_distance=25&max_lag=20000&min_speed=5
-// https://flightloc.pythonanywhere.com/loc?key=205&user=Chris%20vortac&lat=37.745261&long=-97.583838&alt=278&heading=982&speed=456.23&accuracy=937&alt_accuracy=379&max_distance=15&max_lag=20000&min_speed=5
-// https://flightloc.pythonanywhere.com/loc?key=123&user=Scott%20field&lat=37.668453&long=-97.701083&alt=23&heading=845&speed=125.49&accuracy=166&alt_accuracy=143&max_distance=20&max_lag=20000&min_speed=5
-
+  
 const fetch_api = async () => {
   console.log('fetch_api running  ' + Date.now())
   // try {
     let url = 'https://flightloc.pythonanywhere.com/loc?'
-    url += 'key=' + '327'
-    url += '&user=' + 'Mobile Phone'
+    url += 'key=' + state.settings.keycode
+    url += '&user=' + state.settings.user
     url += '&lat=' + state.coords.latitude
     url += '&long=' + state.coords.longitude
     url += '&alt=' + state.coords.altitude
@@ -87,7 +90,7 @@ const fetch_api = async () => {
     url += '&accuracy=' + state.coords.accuracy
     url += '&alt_accuracy=' + state.coords.altitudeAccuracy
     url += '&max_distance=50'
-    url += '&max_lag=864000'
+    url += '&max_lag=86400000'
     url += '&min_speed=1'
 
     // console.log('fetch_api url', url)
@@ -146,6 +149,7 @@ const setStatus = (phrase: string) => {
     for (let key in p) {
       text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ", "
     }
+    speakAnything('location', text_pretty_apidata);
     console.log(text_pretty_apidata);
 
     // state.coords.latitude = location["coords"]["latitude"];

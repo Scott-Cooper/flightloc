@@ -2,7 +2,42 @@ import { StyleSheet } from 'react-native';
 import { Button } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Speech from 'expo-speech';
-import state, { getSettings } from '../util/state';
+import state from '../util/state';
+
+
+const is_speaking = async () => {
+  const s = await Speech.isSpeakingAsync()
+  state.still_speaking = s
+  return (s)
+}
+export { is_speaking }
+
+
+const speakAnything = (func: string, phrase: string) => {
+  let s = state.settings;
+  // let x = Speech.VoiceQuality
+  // console.log("voicequaliity:", x)
+  // let v = getVoices()
+  // Speech.stop()
+
+  is_speaking()
+  if (state.still_speaking) {
+    console.log(func, 'is_speaking', state.still_speaking)
+  } else {
+    if( phrase == '') { 
+      console.log(func, 'nothing is say')
+      return
+    }
+    Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
+    // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
+    Speech.getAvailableVoicesAsync
+    console.log(func, phrase)
+    console.log(func, 'voice =', s.speechVoice, 'rate =', s.speechRate, 'and pitch =', s.speechPitch)
+  }
+  // console.log('still_speaking', state.still_speaking)
+
+}
+export { speakAnything }
 
 
 export default function TabSpeechScreen() {
@@ -27,16 +62,6 @@ export default function TabSpeechScreen() {
     speakAnything('speak5', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.')
   };
 
-  const speakAnything = (func: string, phrase: string) => {
-    // let s = getSettings();
-    let s = state.settings;
-    let x = Speech.VoiceQuality;
-    // console.log("voicequaliity:", x);
-    let v = getVoices();
-    Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate});
-    Speech.getAvailableVoicesAsync
-    console.log(func, ":", phrase);
-  };
 
   const getVoices = async () => {
     const availableVoices = await Speech.getAvailableVoicesAsync();
