@@ -7,6 +7,7 @@ expo install expo-speech
 expo install expo-checkbox
 expo install @react-native-community/slider
 expo install @react-native-async-storage/async-storage
+expo install react-native-maps
 
 
 https://github.com/callstack/react-native-slider
