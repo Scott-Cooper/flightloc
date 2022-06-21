@@ -2,8 +2,6 @@ import { Text, View } from '../components/Themed';
 import { StyleSheet, ScrollView, Switch, TextInput, Button} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
-// import settings from '../util/settings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import state from '../util/state';
 import { saveSettings } from '../util/storage';
 
@@ -50,6 +48,7 @@ export default function TabSettingsScreen() {
 
 
   function retreive_all_settings() {
+    console.log("retreive_all_settings running");
     setkeycode(state.settings.keycode);
     setuser(state.settings.user);
     setIsEnabled1(state.settings.isEnabled1);
@@ -61,58 +60,6 @@ export default function TabSettingsScreen() {
     setSpeechRate(state.settings.speechRate);
     setSpeechPitch(state.settings.speechPitch);
   }
-
-  const retreive_all_settings_old = async() => {
-    try {
-      let jsonValue = await AsyncStorage.getItem("settings")
-      
-      if(jsonValue != null) {
-        console.log("retreive_all_settings on settings tab: ", jsonValue);
-        let settings  = (JSON.parse(jsonValue));
-        setIsEnabled1(settings.isEnabled1);
-        setIsEnabled2(settings.isEnabled2);
-        setIsEnabled3(settings.isEnabled3);
-        setSliderValue(settings.sliderValue);
-        setSpeechVoice(settings.speechVoice);
-        setSpeechRate(settings.speechRate);
-        setSpeechPitch(settings.speechPitch);
-      }
-    } catch(e) {
-      console.log('retreive_setting, failed: ', e)
-    }
-
-      // retreive_setting(isEnabled1, setIsEnabled1, "isEnabled1")
-    // retreive_setting(isEnabled2, setIsEnabled2, "isEnabled2")
-    // retreive_setting(isEnabled3, setIsEnabled3, "isEnabled3")
-    // retreive_setting(slideGpsUpdatesPerMinute, setSliderGpsUpdatesPerMinute, "slideGpsUpdatesPerMinute")
-    // retreive_setting(sliderValue, setSliderValue, "sliderValue")
-    // retreive_setting(sliderVolume, setSliderVolume, "sliderVolume")
-    // retreive_setting(sliderRate, setSliderRate, "sliderRate")
-    // retreive_setting(sliderPitch, setSliderPitch, "sliderPitch")
-  }
-
-
-  const retreive_setting = async (varName: any, setFunc: any, keyName: string) => {
-    // try {
-      let jsonValue = await AsyncStorage.getItem(keyName)
-      console.log("jjj", jsonValue);
-      // jsonValue != null ? JSON.parse(jsonValue) : null;
-
-      if(jsonValue != null) {
-        // setFunc(eval(jsonValue))
-        console.log("got here 333");
-        // setAllSettings(JSON.parse(jsonValue))
-      }
-
-      // console.log("retreive_setting,", keyName, JSON.stringify(jsonValue, null, 2) );
-      
-      console.log("retreive_setting,", keyName, JSON.stringify(jsonValue) );
-      // console.log("iii: ", allSettings);
-    // } catch(e) {
-    //   console.log('retreive_setting, failed: ', e)
-    // }
-  }
-
 
   console.log("render TabSettingsScreen");
   // console.log("state:", state);
