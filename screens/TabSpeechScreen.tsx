@@ -9,21 +9,25 @@ import state from '../util/state';
 const getVoices = async () => {
 
   // Because of a bug in getAvailableVoicesAsync, we have to call it twice with a short 
-  // delay between calls.  Why this works is a mystery to me.
-  const first_useless_call = await Speech.getAvailableVoicesAsync()
+  // delay between calls.  Why this works is a mystery to me.  WTF
+  await Speech.getAvailableVoicesAsync()
+  
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(null);
-    }, 1);
+    }, 500);
   });
 
   const availableVoices = await Speech.getAvailableVoicesAsync()
+  // console.log('getVoices voices', availableVoices)
+  console.log('getVoices found', availableVoices.length, 'voices before filter')
   let filtered = availableVoices.filter(function(value, index, arr){ 
-    return value.identifier.includes("local") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
+    return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
   })
 
-  console.log('getVoices found', filtered.length, 'voices')
+  console.log('getVoices found', filtered.length, 'voices after filter')
   state.availableVoices = filtered
+  // console.log('getVoices found', state.availableVoices)
 }
 export { getVoices }
 
@@ -51,7 +55,7 @@ const speakAnything = (func: string, phrase: string) => {
       console.log(func, 'nothing is say')
       return
     }
-    console.log(func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier)
+    // console.log(func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier)
     Speech.speak(phrase, {voice: state.availableVoices[s.speechVoice].identifier, pitch: s.speechPitch, rate: s.speechRate})
     // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
     // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
