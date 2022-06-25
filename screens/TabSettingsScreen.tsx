@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
 import state from '../util/state';
 import { saveSettings } from '../util/storage';
+import { getVoices } from './TabSpeechScreen';
+
 
 export default function TabSettingsScreen() {
 
@@ -176,7 +178,7 @@ export default function TabSettingsScreen() {
           <Slider
             style={styles.slider}
             minimumValue={0}
-            maximumValue={47}
+            maximumValue={state.availableVoices.length - 1}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
             value={speechVoice}

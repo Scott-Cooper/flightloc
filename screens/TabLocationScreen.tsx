@@ -147,7 +147,7 @@ const setStatus = (phrase: string) => {
 
     const p = state.apidata
     for (let key in p) {
-      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ", "
+      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ",\n"
     }
     speakAnything('location', text_pretty_apidata);
     console.log(text_pretty_apidata);
