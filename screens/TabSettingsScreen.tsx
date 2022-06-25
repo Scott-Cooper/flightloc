@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Slider from '@react-native-community/slider';
 import state from '../util/state';
 import { saveSettings } from '../util/storage';
-import { getVoices } from './TabSpeechScreen';
+import { speakAnything } from './TabSpeechScreen';
 
 
 export default function TabSettingsScreen() {
@@ -61,6 +61,12 @@ export default function TabSettingsScreen() {
     setSpeechVoice(state.settings.speechVoice);
     setSpeechRate(state.settings.speechRate);
     setSpeechPitch(state.settings.speechPitch);
+  }
+
+
+  function test_speech() {
+    speakAnything('settings voices', 'Bryant 5.3 miles at 3 oclock');
+    setSpeechVoice(speechVoice)
   }
 
   console.log("render TabSettingsScreen");
@@ -192,12 +198,12 @@ export default function TabSettingsScreen() {
         <View style={styles.section}>
           <Slider
             style={styles.slider}
-            minimumValue={0.1}
-            maximumValue={3.0}
+            minimumValue={0.7}
+            maximumValue={2.0}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
             value={speechRate}
-            step={0.01}
+            step={0.1}
             onValueChange={ (sliderRate) => setSpeechRate(sliderRate) }
           />
           <Text style={styles.slider_values}>{speechRate}</Text>
@@ -207,20 +213,20 @@ export default function TabSettingsScreen() {
         <View style={styles.section}>
           <Slider
             style={styles.slider}
-            minimumValue={0.1}
-            maximumValue={3.0}
+            minimumValue={0.5}
+            maximumValue={2.0}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
             value={speechPitch}
-            step={0.01}
+            step={0.1}
             onValueChange={ (sliderPitch) => setSpeechPitch(sliderPitch) }
           />
           <Text style={styles.slider_values}>{speechPitch}</Text>
         </View>
 
-        <View style={styles.separator} lightColor="#333" darkColor="#444" />
         <Button title="Save" onPress={save_all_settings} />
-        <View style={styles.separator} lightColor="#333" darkColor="#444" />
+        <View style={styles.separator}/>
+        <Button title="Test Voice" onPress={test_speech} />
       </ScrollView>
     </View>
   );
