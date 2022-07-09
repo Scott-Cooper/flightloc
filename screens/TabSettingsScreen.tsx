@@ -11,12 +11,12 @@ export default function TabSettingsScreen() {
 
   const [keycode, setkeycode] = useState('');
   const [user, setuser] = useState('Unknown');
-  const [isEnabled1, setIsEnabled1] = useState(false);
-  const [isEnabled2, setIsEnabled2] = useState(false);
-  const [isEnabled3, setIsEnabled3] = useState(false);
-  const toggleSwitch1 = () => setIsEnabled1(previousState => !previousState);
-  const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
-  const toggleSwitch3 = () => setIsEnabled3(previousState => !previousState);
+  const [isIncludeCollision, setIsIncludeCollision] = useState(false);
+  const [isIncludeBearing, setIsIncludeBearing] = useState(false);
+  const [isIncludeAltitude, setIsIncludeAltitude] = useState(false);
+  const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState);
+  const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState);
+  const toggleSwitch3 = () => setIsIncludeAltitude(previousState => !previousState);
 
   const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(6);
   const [sliderValue, setSliderValue] = useState(15);
@@ -34,9 +34,9 @@ export default function TabSettingsScreen() {
   function save_all_settings() {
     state.settings.keycode = keycode
     state.settings.user = user
-    state.settings.isEnabled1 = isEnabled1
-    state.settings.isEnabled2 = isEnabled2;
-    state.settings.isEnabled3 = isEnabled3;
+    state.settings.isIncludeCollision = isIncludeCollision
+    state.settings.isIncludeBearing = isIncludeBearing;
+    state.settings.isIncludeAltitude = isIncludeAltitude;
     state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute;
     state.settings.sliderValue = sliderValue;
     state.settings.speechVoice = speechVoice;
@@ -53,9 +53,9 @@ export default function TabSettingsScreen() {
     console.log("retreive_all_settings running");
     setkeycode(state.settings.keycode);
     setuser(state.settings.user);
-    setIsEnabled1(state.settings.isEnabled1);
-    setIsEnabled2(state.settings.isEnabled2);
-    setIsEnabled3(state.settings.isEnabled3);
+    setIsIncludeCollision(state.settings.isIncludeCollision);
+    setIsIncludeBearing(state.settings.isIncludeBearing);
+    setIsIncludeAltitude(state.settings.isIncludeAltitude);
     setGpsUpdatesPerMinute(state.settings.gpsUpdatesPerMinute);
     setSliderValue(state.settings.sliderValue);
     setSpeechVoice(state.settings.speechVoice);
@@ -65,7 +65,7 @@ export default function TabSettingsScreen() {
 
 
   function test_speech() {
-    speakAnything('settings voices', 'Bryant 5.3 miles at 3 oclock');
+    speakAnything('settings test', 'Bryant 5.3 miles at 3 oclock');
     setSpeechVoice(speechVoice)
   }
 
@@ -114,37 +114,37 @@ export default function TabSettingsScreen() {
         <View style={styles.section}>
           <Switch
             trackColor={{ false: '#777', true: '#8cf' }}
-            thumbColor={isEnabled1 ? '#0bf' : '#fff'}
+            thumbColor={isIncludeCollision ? '#0bf' : '#fff'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch1}
-            value={isEnabled1}
+            value={isIncludeCollision}
           />
-          <Text style={styles.paragraph}>Collision warning</Text>
-          <Text>{isEnabled1 ? ', On' : ', Off'}</Text>
+          <Text style={styles.paragraph}>Include collision warning</Text>
+          {/* <Text>{isIncludeCollision ? ', On' : ', Off'}</Text> */}
         </View>
 
         <View style={styles.section}>
           <Switch
             trackColor={{ false: '#777', true: '#8cf' }}
-            thumbColor={isEnabled2 ? '#0bf' : '#fff'}
+            thumbColor={isIncludeBearing ? '#0bf' : '#fff'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch2}
-            value={isEnabled2}
+            value={isIncludeBearing}
           />
-          <Text style={styles.paragraph}>Hammer time</Text>
-          <Text>{isEnabled2 ? ', On' : ', Off'}</Text>
+          <Text style={styles.paragraph}>Include absolute bearing</Text>
+          {/* <Text>{isIncludeBearing ? ', On' : ', Off'}</Text> */}
         </View>
 
         <View style={styles.section}>
           <Switch
             trackColor={{ false: '#777', true: '#8cf' }}
-            thumbColor={isEnabled3 ? '#0bf' : '#fff'}
+            thumbColor={isIncludeAltitude ? '#0bf' : '#fff'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch3}
-            value={isEnabled3}
+            value={isIncludeAltitude}
           />
-          <Text style={styles.paragraph}>In the mean time you can get something cool to drink.  If you prefer to dine alone, just call ahead and let us know.</Text>
-          <Text>{isEnabled3 ? ', On' : ', Off'}</Text>
+          <Text style={styles.paragraph}>Include altitude</Text>
+          {/* <Text>{isIncludeAltitude ? ', On' : ', Off'}</Text> */}
         </View>
 
         <View style={styles.separator} lightColor="#333" darkColor="#444" />

@@ -2,9 +2,9 @@ export default {
   settings: {
     keycode: '',
     user: 'Unknown',
-    isEnabled1: true,
-    isEnabled2: true,
-    isEnabled3: true,
+    isIncludeCollision: true,
+    isIncludeBearing: true,
+    isIncludeAltitude: true,
     gpsUpdatesPerMinute: 1,
     sliderValue: 1,
     speechVoice: 1,

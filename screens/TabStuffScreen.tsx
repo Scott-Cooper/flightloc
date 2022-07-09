@@ -48,7 +48,7 @@ export default function TabStuffScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Make pretend pilots</Text>
+      <Text style={styles.title}>Make pretend pilots:</Text>
       <View style={styles.separator} />
       <Button title="Fake Boot Barn" onPress={fake_bootbarn} />
       <View style={styles.separator} />

@@ -3,12 +3,13 @@ import state from '../util/state';
 
   
 const saveSettings = async () => {
-  console.log('Before saveSetting,', state.settings)
+  console.log('saveSetting')
+  // console.log('Before saveSetting,', state.settings)
   storeDataValue ('settings_keycode', state.settings.keycode)
   storeDataValue ('settings_user', state.settings.user)
-  storeDataValue ('settings_isEnabled1',  JSON.stringify(state.settings.isEnabled1))
-  storeDataValue ('settings_isEnabled2',  JSON.stringify(state.settings.isEnabled2))
-  storeDataValue ('settings_isEnabled3',  JSON.stringify(state.settings.isEnabled3))
+  storeDataValue ('settings_isIncludeCollision',  JSON.stringify(state.settings.isIncludeCollision))
+  storeDataValue ('settings_isIncludeBearing',  JSON.stringify(state.settings.isIncludeBearing))
+  storeDataValue ('settings_isIncludeAltitude',  JSON.stringify(state.settings.isIncludeAltitude))
   storeDataValue ('settings_gpsUpdatesPerMinute',  JSON.stringify(state.settings.gpsUpdatesPerMinute))
   storeDataValue ('settings_sliderValue',  JSON.stringify(state.settings.sliderValue))
   storeDataValue ('settings_speechVoice',  JSON.stringify(state.settings.speechVoice))
@@ -19,18 +20,18 @@ export { saveSettings };
 
 
 const getSettings = async () => {
-  console.log("getSettings");
+  // console.log("getSettings");
   state.settings.keycode = await AsyncStorage.getItem('settings_keycode')
   state.settings.user = await AsyncStorage.getItem('settings_user')
-  state.settings.isEnabled1 = eval(await AsyncStorage.getItem('settings_isEnabled1'))
-  state.settings.isEnabled2 = eval(await AsyncStorage.getItem('settings_isEnabled2'))
-  state.settings.isEnabled3 = eval(await AsyncStorage.getItem('settings_isEnabled3'))
+  state.settings.isIncludeCollision = eval(await AsyncStorage.getItem('settings_isIncludeCollision'))
+  state.settings.isIncludeBearing = eval(await AsyncStorage.getItem('settings_isIncludeBearing'))
+  state.settings.isIncludeAltitude = eval(await AsyncStorage.getItem('settings_isIncludeAltitude'))
   state.settings.gpsUpdatesPerMinute = eval(await AsyncStorage.getItem('settings_gpsUpdatesPerMinute'))
   state.settings.sliderValue = eval(await AsyncStorage.getItem('settings_sliderValue'))
   state.settings.speechVoice = eval(await AsyncStorage.getItem('settings_speechVoice'))
   state.settings.speechRate = eval(await AsyncStorage.getItem('settings_speechRate'))
   state.settings.speechPitch = eval(await AsyncStorage.getItem('settings_speechPitch'))
-  console.log('After getSettings,', state.settings)
+  console.log('getSettings,', state.settings)
 }
 export { getSettings };
 
