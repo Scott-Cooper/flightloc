@@ -118,17 +118,18 @@ const setStatus = (phrase: string) => {
 
 
 
-  let text = 'Waiting..';
-  let text_lat = '';
-  let text_long = '';
-  let text_alt = '';
-  let text_speed = '';
-  let text_heading = '';
-  let text_accuracy = '';
-  let text_altitudeAccuracy = '';
-  let text_time = '';
-  let text_apidata = '';
-  let text_pretty_apidata = '';
+  let text = 'Waiting..'
+  let text_lat = ''
+  let text_long = ''
+  let text_alt = ''
+  let text_speed = ''
+  let text_heading = ''
+  let text_accuracy = ''
+  let text_altitudeAccuracy = ''
+  let text_time = ''
+  let text_apidata = ''
+  let text_pretty_apidata = ''
+  let text_spoken_apidata = ''
 
   if (errorMsg) {
     text = errorMsg;
@@ -147,20 +148,16 @@ const setStatus = (phrase: string) => {
 
     const p = state.apidata
     for (let key in p) {
-      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ",\n"
+      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + "miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
+      
+      if (state.settings.isIncludeBearing) {
+        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ",\n"
+      } else {
+        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles,\n"
+      }
     }
-    speakAnything('location', text_pretty_apidata);
+    speakAnything('location', text_spoken_apidata);
     console.log(text_pretty_apidata);
-
-    // state.coords.latitude = location["coords"]["latitude"];
-    // state.coords.longitude = location["coords"]["longitude"];
-    // state.coords.altitude = location["coords"]["altitude"] * 3.28084;
-    // state.coords.speed = location["coords"]["speed"] * 2.2369;
-    // state.coords.heading = location["coords"]["heading"];
-    // state.coords.accuracy = location["coords"]["accuracy"] * 3.28084;
-    // state.coords.altitudeAccuracy = location["coords"]["altitudeAccuracy"] * 3.28084;
-    // state.coords.timestamp = location["timestamp"];
-    // console.log(state.coords)
     // console.log(state)
   }
 
@@ -183,6 +180,8 @@ const setStatus = (phrase: string) => {
       <Text style={styles.gps}>{text}</Text> */}
 
       <Text style={styles.gps}>{text_pretty_apidata}</Text>
+      <View style={styles.separator}/>
+      <Text style={styles.gps}>{text_spoken_apidata}</Text>
 
       {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Text style={styles.gps}>api_data: {text_apidata}</Text> */}

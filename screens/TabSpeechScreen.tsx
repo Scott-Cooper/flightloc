@@ -42,10 +42,6 @@ export { is_speaking }
 
 const speakAnything = (func: string, phrase: string) => {
   let s = state.settings;
-  // let x = Speech.VoiceQuality
-  // console.log("voicequaliity:", x)
-  // Speech.stop()
-  // console.log("state", state)
 
   is_speaking()
   if (state.still_speaking) {
@@ -55,13 +51,14 @@ const speakAnything = (func: string, phrase: string) => {
       console.log(func, 'nothing is say')
       return
     }
-    // console.log(func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier)
+
+    console.log('speakAnything:')
+    console.log('  ', phrase)
+    console.log('   Called from', func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier, ' rate', s.speechRate, 'and pitch', s.speechPitch)
+
     Speech.speak(phrase, {voice: state.availableVoices[s.speechVoice].identifier, pitch: s.speechPitch, rate: s.speechRate})
     // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
     // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
-    Speech.getAvailableVoicesAsync
-    console.log(func, phrase)
-    console.log(func, 'voice =', s.speechVoice, 'rate =', s.speechRate, 'and pitch =', s.speechPitch)
   }
   // console.log('still_speaking', state.still_speaking)
 }

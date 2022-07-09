@@ -25,15 +25,15 @@ export default function TabTestScreen() {
   console.log("render TabTestScreen")
 
   // used for switch
-  const [isEnabled1, setIsEnabled1] = useState(false);
+  const [isIncludeCollision, setIsIncludeCollision] = useState(false);
   let text_test = '';
-  text_test = JSON.stringify(isEnabled1);
+  text_test = JSON.stringify(isIncludeCollision);
 
   return (
     // <View style={styles.container}>
     //   <Text style={styles.title}>Testing in Progress</Text>
     //   <Text style={styles.mono}>text_test: {text_test}</Text>
-    //   <Text>{isEnabled1 ? 'On' : 'Off'}</Text>
+    //   <Text>{isIncludeCollision ? 'On' : 'Off'}</Text>
     //   <View style={styles.separator} />
     //   <Text style={styles.mono}>apidata: {JSON.stringify(state.apidata)}</Text>
     // </View>
