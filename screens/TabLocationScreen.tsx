@@ -148,7 +148,7 @@ const setStatus = (phrase: string) => {
 
     const p = state.apidata
     for (let key in p) {
-      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + "miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
+      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
       
       if (state.settings.isIncludeBearing) {
         text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ",\n"

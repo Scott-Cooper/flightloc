@@ -15,14 +15,15 @@ const getVoices = async () => {
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(null);
-    }, 500);
+    }, 1000);
   });
 
   const availableVoices = await Speech.getAvailableVoicesAsync()
   // console.log('getVoices voices', availableVoices)
   console.log('getVoices found', availableVoices.length, 'voices before filter')
   let filtered = availableVoices.filter(function(value, index, arr){ 
-    return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
+    return ! value.identifier.includes("local") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
+    // return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
   })
 
   console.log('getVoices found', filtered.length, 'voices after filter')

@@ -21,16 +21,21 @@ export { saveSettings };
 
 const getSettings = async () => {
   // console.log("getSettings");
-  state.settings.keycode = await AsyncStorage.getItem('settings_keycode')
-  state.settings.user = await AsyncStorage.getItem('settings_user')
-  state.settings.isIncludeCollision = eval(await AsyncStorage.getItem('settings_isIncludeCollision'))
-  state.settings.isIncludeBearing = eval(await AsyncStorage.getItem('settings_isIncludeBearing'))
-  state.settings.isIncludeAltitude = eval(await AsyncStorage.getItem('settings_isIncludeAltitude'))
-  state.settings.gpsUpdatesPerMinute = eval(await AsyncStorage.getItem('settings_gpsUpdatesPerMinute'))
-  state.settings.sliderValue = eval(await AsyncStorage.getItem('settings_sliderValue'))
-  state.settings.speechVoice = eval(await AsyncStorage.getItem('settings_speechVoice'))
-  state.settings.speechRate = eval(await AsyncStorage.getItem('settings_speechRate'))
-  state.settings.speechPitch = eval(await AsyncStorage.getItem('settings_speechPitch'))
+  // state.settings.keycode = await getDataValue('settings_keycode') || ''
+  
+  // https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript/9719815
+  var random_keycode = Math.random().toString(36).substr(2, 8)
+
+  state.settings.keycode = await AsyncStorage.getItem('settings_keycode') || random_keycode
+  state.settings.user = await AsyncStorage.getItem('settings_user') || 'Unknown'
+  state.settings.isIncludeCollision = eval((await AsyncStorage.getItem('settings_isIncludeCollision')) || 'true')
+  state.settings.isIncludeBearing = eval((await AsyncStorage.getItem('settings_isIncludeBearing')) || 'false')
+  state.settings.isIncludeAltitude = eval((await AsyncStorage.getItem('settings_isIncludeAltitude')) || 'false')
+  state.settings.gpsUpdatesPerMinute = eval((await AsyncStorage.getItem('settings_gpsUpdatesPerMinute')) || '3')
+  state.settings.sliderValue = eval((await AsyncStorage.getItem('settings_sliderValue')) || '2')
+  state.settings.speechVoice = eval((await AsyncStorage.getItem('settings_speechVoice')) || '0')
+  state.settings.speechRate = eval((await AsyncStorage.getItem('settings_speechRate')) || '1.6')
+  state.settings.speechPitch = eval((await AsyncStorage.getItem('settings_speechPitch')) || '1.0')
   console.log('getSettings,', state.settings)
 }
 export { getSettings };
@@ -77,6 +82,7 @@ const getDataValue = async (key: string) => {
   try {
     const value = await AsyncStorage.getItem(key)
     if(value !== null) {
+      return value
       // value previously stored
     }
   } catch(e) {

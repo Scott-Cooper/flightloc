@@ -10,7 +10,7 @@ import { speakAnything } from './TabSpeechScreen';
 export default function TabSettingsScreen() {
 
   const [keycode, setkeycode] = useState('');
-  const [user, setuser] = useState('Unknown');
+  const [user, setuser] = useState('');
   const [isIncludeCollision, setIsIncludeCollision] = useState(false);
   const [isIncludeBearing, setIsIncludeBearing] = useState(false);
   const [isIncludeAltitude, setIsIncludeAltitude] = useState(false);
@@ -18,11 +18,11 @@ export default function TabSettingsScreen() {
   const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState);
   const toggleSwitch3 = () => setIsIncludeAltitude(previousState => !previousState);
 
-  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(6);
-  const [sliderValue, setSliderValue] = useState(15);
-  const [speechVoice, setSpeechVoice] = useState(7);
-  const [speechRate, setSpeechRate] = useState(1.0);
-  const [speechPitch, setSpeechPitch] = useState(1.0);
+  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(1);
+  const [sliderValue, setSliderValue] = useState(1);
+  const [speechVoice, setSpeechVoice] = useState(1);
+  const [speechRate, setSpeechRate] = useState(1);
+  const [speechPitch, setSpeechPitch] = useState(1);
 
 
   useEffect(() => {
@@ -199,7 +199,7 @@ export default function TabSettingsScreen() {
           <Slider
             style={styles.slider}
             minimumValue={0.7}
-            maximumValue={2.0}
+            maximumValue={2.5}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
             value={speechRate}

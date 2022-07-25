@@ -30,7 +30,7 @@ SDK version:  44.0.0 \
 Version:  0.1.2 \
 Commit:  82783ba 
 
-#### How to install this build on Android
+### How to install this build on Android
 
 On devices running Android 8.0 (API level 26) and higher, you must navigate to the Install unknown apps system settings screen to enable app installations from a particular location (i.e. the web browser you are downloading the app from).
 On devices running Android 7.1.1 (API level 25) and lower, you should enable the Unknown sources system setting, found in Settings > Security on your device.
