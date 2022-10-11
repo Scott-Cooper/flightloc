@@ -102,14 +102,14 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TabTest"
         component={TabTestScreen}
         options={{
           title: 'Test',
           tabBarIcon: ({ color }) => <TabBarIcon name="flask" color={color} />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }
