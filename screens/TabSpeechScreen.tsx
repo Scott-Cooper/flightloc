@@ -28,40 +28,55 @@ const getVoices = async () => {
 
   console.log('getVoices found', filtered.length, 'voices after filter')
   state.availableVoices = filtered
+  state.still_speaking = false
   // console.log('getVoices found', state.availableVoices)
 }
 export { getVoices }
 
 
-const is_speaking = async () => {
-  const s = await Speech.isSpeakingAsync()
-  state.still_speaking = s
-  return (s)
+const onStartCallBack = () => {
+  console.log('   start speaking')
+  state.still_speaking = true
 }
-export { is_speaking }
+
+
+const onDoneCallBack = () => {
+  console.log('   done speaking')
+  state.still_speaking = false
+}
 
 
 const speakAnything = (func: string, phrase: string) => {
   let s = state.settings;
 
-  is_speaking()
   if (state.still_speaking) {
-    console.log(func, 'is_speaking', state.still_speaking)
-  } else {
-    if( phrase == '') { 
-      console.log(func, 'nothing is say')
-      return
-    }
-
-    console.log('speakAnything:')
-    console.log('  ', phrase)
-    console.log('   Called from', func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier, ' rate', s.speechRate, 'and pitch', s.speechPitch)
-
-    Speech.speak(phrase, {voice: state.availableVoices[s.speechVoice].identifier, pitch: s.speechPitch, rate: s.speechRate})
-    // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
-    // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
+    console.log('  ', func, 'still speaking')
+    return
   }
-  // console.log('still_speaking', state.still_speaking)
+  
+  if( phrase == '') { 
+    console.log('  ', func, 'nothing to say')
+    return
+  }
+
+  console.log('speakAnything:')
+  console.log("   phrase: " + phrase)
+  // console.log("state.availableVoices: " + state.availableVoices)
+  console.log("   s.speechVoice: " + s.speechVoice)
+  console.log('   called from', func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier, ' rate', s.speechRate, 'and pitch', s.speechPitch)
+
+  state.still_speaking = true
+  Speech.speak(phrase, 
+    {
+      voice: state.availableVoices[s.speechVoice].identifier, 
+      pitch: s.speechPitch, 
+      rate: s.speechRate,
+      onStart: () => onStartCallBack(),
+      onDone: () => onDoneCallBack()
+    }
+ )
+  // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
+  // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
 }
 export { speakAnything }
 
@@ -73,7 +88,7 @@ export default function TabSpeechScreen() {
   };
 
   const speak2 = () => {
-    speakAnything('speak2', 'Hey ' + state.settings.user + ', L Z is 2.4 miles at 7 oclock.  24 minutes till sunset.')
+    speakAnything('speak2', 'Hey ' + state.settings.user + ', landing zone is 2.4 miles at 7 oclock.  24 minutes till sunset.')
   };
 
   const speak3 = () => {

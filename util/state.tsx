@@ -22,6 +22,7 @@ export default {
     timestamp: 8,
   },
   still_speaking: false,
+  next_thing_to_say: '',
   apidata: {},
   availableVoices: [],
 }
