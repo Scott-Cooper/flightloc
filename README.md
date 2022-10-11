@@ -5,12 +5,16 @@ It is intended to convey all information using only audio thru a bluetooth enabl
 
 ## Development environment:
 Install expo.dev found here: https://docs.expo.dev/get-started/installation \
+npm install --global expo-cli \
+expo whoami \
 expo install expo-location \
 expo install expo-speech \
 expo install expo-checkbox \
 expo install @react-native-community/slider \
 expo install @react-native-async-storage/async-storage \
-expo install react-native-maps
+expo install react-native-maps \
+expo install react-native-volume-manager \
+expo install expo-speech \
 
 npm install -g eas-cli \
 eas login \
@@ -18,12 +22,17 @@ eas whoami \
 Increment version number in app.json \
 eas build --profile preview --platform android
 
+## Development builds (custom client)
+### https://docs.expo.dev/development/getting-started/
+expo install expo-dev-client \
+eas build --profile development --platform android \
+expo start --dev-client
 
 ## Random usefull links:
 https://reactnativeelements.com/docs \
 https://icons.expo.fyi/ \
 https://github.com/callstack/react-native-slider
-
+https://github.com/hirbod/react-native-volume-manager
 
 ## Latest APK package build:
 SDK version:  44.0.0 \

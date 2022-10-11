@@ -5,51 +5,67 @@
 // https://flightloc.pythonanywhere.com/loc?key=123&user=Field&lat=37.668453&long=-97.701083&alt=1223&heading=45&speed=25.49&accuracy=66&alt_accuracy=14.3&max_distance=20&max_lag=20000&min_speed=5
 // https://flightloc.pythonanywhere.com/loc?key=117&user=Norwich&lat=37.457929&long=-97.835638&alt=1200&heading=0&speed=24.3&accuracy=16.2&alt_accuracy=13&max_distance=20&max_lag=20000&min_speed=5
 
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
-import * as Location from 'expo-location';
-import React, { useState, useEffect } from 'react';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import state from '../util/state';
-import { speakAnything }  from './TabSpeechScreen';
+import { StyleSheet } from 'react-native'
+import { Text, View } from '../components/Themed'
+import * as Location from 'expo-location'
+import React, { useState, useEffect } from 'react'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
+import state from '../util/state'
+import { speakAnything }  from './TabSpeechScreen'
+import { getVolume, VolumeManager } from 'react-native-volume-manager'
 
 
 export default function TabLocationScreen() {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  // const [time, setTime] = useState(Date.now());
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
   
 
   // useEffect executes when the screen is loaded, only happens once
-  // Gets rerun during refresh, so it will get doubled up in debug mode
+  // Gets re-run during refresh, so it will get doubled up in debug mode
   useEffect(() => {
     (async () => {
-      let { status } = await  Location.requestForegroundPermissionsAsync();
+      let { status } = await  Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        setStatus('Permission to access location was denied');
-        return;
+        console.log('permission to access location was denied')
+        return
       } else {
-        console.log('Access to foreground location granted')
-        setStatus(status)
+        console.log('access to foreground location granted')
       }
-      // watch_location();
-      console.log('Keep awake activated')
-      activateKeepAwake(); 
-      console.log('Interval run')
-      interval();
+
+      console.log('activated keep awake')
+      activateKeepAwake() 
+
+      console.log('added volume listener')
+      const volumeListener = VolumeManager.addVolumeListener((result) => {
+        check_vol_buttons(result.volume)
+        // returns the current volume as a float (0-1)
+        // on android, the result object will also have the keys
+        // music, system, ring, alarm, notification
+      });
+
+      console.log('setInterval started')
+      const getLoc = setInterval(async () => {
+        get_gps()
+      }, 3000)
+
     })();
+
   }, []);
 
 
-  const interval = async () => {
-    const getLoc = setInterval(async () => {
-      // console.log('interval running');
-      console.log('-----------------------------------------');
-      get_gps();
-    }, 3000)
+  const check_vol_buttons = (vol: number) => {
+  // const check_vol_buttons = async (vol: number) => {
+    var newvol = vol.toFixed(1).toString()
+    console.log("check_vol_button " + vol + '-------------------------------------------------------------------------')
+    // speakAnything('location volume test', "Vol button was pressed." + newvol)
+    speakAnything('location', state.next_thing_to_say)
+    // state.still_speaking = true
+    // await VolumeManager.setVolume(0.7)
   }
 
+
   const get_gps = async () => {
+    console.log('-----------------------------------------')
     console.log('get_gps running  ', Date.now())
     let location = await Location.watchPositionAsync(
       {
@@ -58,63 +74,57 @@ export default function TabLocationScreen() {
         timeInterval: 1000,
         distanceInterval: 20,
       }, (location_update) => {
-        setLocation(location_update);  
-        state.coords.latitude = location_update["coords"]["latitude"];
-        state.coords.longitude = location_update["coords"]["longitude"];
-        state.coords.altitude = location_update["coords"]["altitude"] * 3.28084;
-        state.coords.speed = location_update["coords"]["speed"] * 2.2369;
-        state.coords.heading = location_update["coords"]["heading"];
-        state.coords.accuracy = location_update["coords"]["accuracy"] * 3.28084;
-        state.coords.altitudeAccuracy = location_update["coords"]["altitudeAccuracy"] * 3.28084;
-        state.coords.timestamp = location_update["timestamp"];
-        // console.log('update location:', location_update.coords);
-        console.log('get_gps   gps time:', location_update.timestamp);
+        setLocation(location_update)    
+        state.coords.latitude = location_update["coords"]["latitude"]
+        state.coords.longitude = location_update["coords"]["longitude"]
+        state.coords.altitude = location_update["coords"]["altitude"] * 3.28084
+        state.coords.speed = location_update["coords"]["speed"] * 2.2369
+        state.coords.heading = location_update["coords"]["heading"]
+        state.coords.accuracy = location_update["coords"]["accuracy"] * 3.28084
+        state.coords.altitudeAccuracy = location_update["coords"]["altitudeAccuracy"] * 3.28084
+        state.coords.timestamp = location_update["timestamp"]
+        // console.log('update location:', location_update.coords)
+        console.log('get_gps time      ', location_update.timestamp)
+        fetch_api(); 
       }
     )
     console.log('get_gps complete  ' + Date.now())
-    fetch_api(); 
   }
 
-  
-const fetch_api = async () => {
-  console.log('fetch_api running  ' + Date.now())
-  // try {
-    let url = 'https://flightloc.pythonanywhere.com/loc?'
-    url += 'key=' + state.settings.keycode
-    url += '&user=' + state.settings.user
-    url += '&lat=' + state.coords.latitude
-    url += '&long=' + state.coords.longitude
-    url += '&alt=' + state.coords.altitude
-    url += '&heading=' + state.coords.heading
-    url += '&speed=' + state.coords.speed
-    url += '&accuracy=' + state.coords.accuracy
-    url += '&alt_accuracy=' + state.coords.altitudeAccuracy
-    url += '&max_distance=50'
-    url += '&max_lag=86400000'
-    url += '&min_speed=1'
 
-    // console.log('fetch_api url', url)
-    const response = await fetch(url)
-    console.log('fetch_api status', response.status)
-    // console.log('fetch_api headers', response.headers)
-    // console.log('fetch_api ok', response.ok)
+  const fetch_api = async () => {
+    console.log('fetch_api running  ' + Date.now())
+    // try {
+      let url = 'https://flightloc.pythonanywhere.com/loc?'
+      url += 'key=' + state.settings.keycode
+      url += '&user=' + state.settings.user
+      url += '&lat=' + state.coords.latitude
+      url += '&long=' + state.coords.longitude
+      url += '&alt=' + state.coords.altitude
+      url += '&heading=' + state.coords.heading
+      url += '&speed=' + state.coords.speed
+      url += '&accuracy=' + state.coords.accuracy
+      url += '&alt_accuracy=' + state.coords.altitudeAccuracy
+      url += '&max_distance=50'
+      url += '&max_lag=86400000'
+      url += '&min_speed=1'
 
-    const apidata = await response.json()
-    state.apidata = apidata
-    // console.log('fetch_api:', apidata)
-    // this.setState({loading: false, posts})
-  // } catch (e) {
-  //   console.log('fetch_api error:', e)
-    // this.setState({loading: false, error: true})
-  // }
-  console.log('fetch_api complete  ' + Date.now())
-}
+      // console.log('fetch_api url', url)
+      const response = await fetch(url)
+      console.log('fetch_api status  ', response.status)
+      // console.log('fetch_api headers', response.headers)
+      // console.log('fetch_api ok', response.ok)
 
-
-const setStatus = (phrase: string) => {
-  const status = phrase;    
-  console.log("status:", phrase);
-};
+      const apidata = await response.json()
+      state.apidata = apidata
+      // console.log('fetch_api:', apidata)
+      // this.setState({loading: false, posts})
+    // } catch (e) {
+    //   console.log('fetch_api error:', e)
+      // this.setState({loading: false, error: true})
+    // }
+    console.log('fetch_api complete ' + Date.now())
+  }
 
 
 
@@ -130,34 +140,36 @@ const setStatus = (phrase: string) => {
   let text_apidata = ''
   let text_pretty_apidata = ''
   let text_spoken_apidata = ''
+  let text_random_thing = ''
 
   if (errorMsg) {
-    text = errorMsg;
+    text = errorMsg
   } else if (location) {
-    // console.log('Received new location xxx', location);
-    text = JSON.stringify(location);
-    text_lat = JSON.stringify(location["coords"]["latitude"]);
-    text_long = JSON.stringify(location["coords"]["longitude"]);
-    text_alt = JSON.stringify(location["coords"]["altitude"] * 3.28084);
-    text_speed = JSON.stringify(location["coords"]["speed"] * 2.2369);
-    text_heading = JSON.stringify(location["coords"]["heading"]);
-    text_accuracy = JSON.stringify(location["coords"]["accuracy"] * 3.28084);
-    text_altitudeAccuracy = JSON.stringify(location["coords"]["altitudeAccuracy"] * 3.28084);
-    text_time = JSON.stringify(location["timestamp"]);
-    text_apidata = JSON.stringify(state.apidata);
+    // console.log('Received new location xxx', location)
+    text = JSON.stringify(location)
+    text_lat = JSON.stringify(location["coords"]["latitude"])
+    text_long = JSON.stringify(location["coords"]["longitude"])
+    text_alt = JSON.stringify(location["coords"]["altitude"] * 3.28084)
+    text_speed = JSON.stringify(location["coords"]["speed"] * 2.2369)
+    text_heading = JSON.stringify(location["coords"]["heading"])
+    text_accuracy = JSON.stringify(location["coords"]["accuracy"] * 3.28084)
+    text_altitudeAccuracy = JSON.stringify(location["coords"]["altitudeAccuracy"] * 3.28084)
+    text_time = JSON.stringify(location["timestamp"])
+    text_apidata = JSON.stringify(state.apidata)
 
     const p = state.apidata
     for (let key in p) {
       text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
-      
+
       if (state.settings.isIncludeBearing) {
-        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles at " + p[key]['bearing'].toFixed(0) + ",\n"
+        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + p[key]['bearing'].toFixed(0) + ",\n"
       } else {
         text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles,\n"
       }
     }
-    speakAnything('location', text_spoken_apidata);
-    console.log(text_pretty_apidata);
+    // speakAnything('location', text_spoken_apidata)
+    state.next_thing_to_say = text_spoken_apidata
+    console.log(text_pretty_apidata)
     // console.log(state)
   }
 
@@ -187,7 +199,7 @@ const setStatus = (phrase: string) => {
       <Text style={styles.gps}>api_data: {text_apidata}</Text> */}
 
     </View>
-  );
+  )
 }
 
 
@@ -212,5 +224,5 @@ const styles = StyleSheet.create({
     height: 2,
     width: '100%',
   },
-});
+})
 

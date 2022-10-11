@@ -2,7 +2,7 @@
   "expo": {
     "name": "Flightloc",
     "slug": "flightloc",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -30,6 +30,11 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fe4ca33a-5d87-4727-b678-bbb794f20ec3"
+      }
     }
   }
 }
