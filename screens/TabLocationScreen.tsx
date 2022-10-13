@@ -105,9 +105,9 @@ export default function TabLocationScreen() {
       url += '&speed=' + state.coords.speed
       url += '&accuracy=' + state.coords.accuracy
       url += '&alt_accuracy=' + state.coords.altitudeAccuracy
-      url += '&max_distance=50'
-      url += '&max_lag=86400000'
-      url += '&min_speed=1'
+      url += '&max_distance=' + state.settings.maxDistance
+      url += '&max_lag=' + state.settings.maxLag * 1000
+      url += '&min_speed=' + state.settings.minSpeed
 
       // console.log('fetch_api url', url)
       const response = await fetch(url)

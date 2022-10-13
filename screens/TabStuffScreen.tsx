@@ -32,7 +32,7 @@ export default function TabStuffScreen() {
 
 
   const fake_vortac = async() => {
-    fake_fetch('https://flightloc.pythonanywhere.com/loc?key=205&user=Vortac&lat=37.745261&long=-97.583838&alt=1278&heading=182&speed=26.23&accuracy=19&alt_accuracy=79&max_distance=60&max_lag=20000&min_speed=-1')
+    fake_fetch('https://flightloc.pythonanywhere.com/loc?key=205&user=Vortac&lat=37.745261&long=-97.583838&alt=1278&heading=182&speed=8.23&accuracy=19&alt_accuracy=79&max_distance=60&max_lag=20000&min_speed=-1')
   }
 
   

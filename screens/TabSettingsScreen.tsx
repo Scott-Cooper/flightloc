@@ -19,7 +19,10 @@ export default function TabSettingsScreen() {
   const toggleSwitch3 = () => setIsIncludeAltitude(previousState => !previousState);
 
   const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(1);
-  const [sliderValue, setSliderValue] = useState(1);
+  const [maxDistance, setMaxDistance] = useState(1);
+  const [maxLag, setMaxLag] = useState(1);
+  const [minSpeed, setMinSpeed] = useState(1);
+  const [maxContacts, setMaxContacts] = useState(1);
   const [speechVoice, setSpeechVoice] = useState(1);
   const [speechRate, setSpeechRate] = useState(1);
   const [speechPitch, setSpeechPitch] = useState(1);
@@ -38,7 +41,10 @@ export default function TabSettingsScreen() {
     state.settings.isIncludeBearing = isIncludeBearing;
     state.settings.isIncludeAltitude = isIncludeAltitude;
     state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute;
-    state.settings.sliderValue = sliderValue;
+    state.settings.maxDistance = maxDistance;
+    state.settings.maxLag = maxLag;
+    state.settings.minSpeed = minSpeed;
+    state.settings.maxContacts = maxContacts;
     state.settings.speechVoice = speechVoice;
     state.settings.speechRate = speechRate;
     state.settings.speechPitch = speechPitch;
@@ -57,7 +63,10 @@ export default function TabSettingsScreen() {
     setIsIncludeBearing(state.settings.isIncludeBearing);
     setIsIncludeAltitude(state.settings.isIncludeAltitude);
     setGpsUpdatesPerMinute(state.settings.gpsUpdatesPerMinute);
-    setSliderValue(state.settings.sliderValue);
+    setMaxDistance(state.settings.maxDistance);
+    setMaxLag(state.settings.maxLag);
+    setMinSpeed(state.settings.minSpeed);
+    setMaxContacts(state.settings.maxContacts);
     setSpeechVoice(state.settings.speechVoice);
     setSpeechRate(state.settings.speechRate);
     setSpeechPitch(state.settings.speechPitch);
@@ -164,19 +173,64 @@ export default function TabSettingsScreen() {
           <Text style={styles.slider_values}>{gpsUpdatesPerMinute}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Seconds between location status</Text>
+        <Text style={styles.slider_label}>Ignore contacts beyond this distance (default 25 miles)</Text>
+        <View style={styles.section}>
+          <Slider
+            style={styles.slider}
+            minimumValue={3}
+            maximumValue={100}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#a0a0a0"
+            value={maxDistance}
+            step={1}
+            onValueChange={ (maxDistance) => setMaxDistance(maxDistance) }
+          />
+          <Text style={styles.slider_values}>{maxDistance}</Text>
+        </View>
+
+        <Text style={styles.slider_label}>Ignore contacts older than (default 30 seconds)</Text>
+        <View style={styles.section}>
+          <Slider
+            style={styles.slider}
+            minimumValue={1}
+            maximumValue={120}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#a0a0a0"
+            value={maxLag}
+            step={1}
+            onValueChange={ (maxLag) => setMaxLag(maxLag) }
+          />
+          <Text style={styles.slider_values}>{maxLag}</Text>
+        </View>
+
+        <Text style={styles.slider_label}>Ignore contacts slower than (default 3 mph)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
             minimumValue={0}
-            maximumValue={120}
+            maximumValue={20}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={sliderValue}
+            value={minSpeed}
             step={1}
-            onValueChange={ (sliderValue) => setSliderValue(sliderValue) }
+            onValueChange={ (minSpeed) => setMinSpeed(minSpeed) }
           />
-          <Text style={styles.slider_values}>{sliderValue}</Text>
+          <Text style={styles.slider_values}>{minSpeed}</Text>
+        </View>
+
+        <Text style={styles.slider_label}>Maximum contacts to report (default 10)</Text>
+        <View style={styles.section}>
+          <Slider
+            style={styles.slider}
+            minimumValue={1}
+            maximumValue={30}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#a0a0a0"
+            value={maxContacts}
+            step={1}
+            onValueChange={ (maxContacts) => setMaxContacts(maxContacts) }
+          />
+          <Text style={styles.slider_values}>{maxContacts}</Text>
         </View>
 
         <Text style={styles.slider_label}>Speech Voice  (default 1)</Text>

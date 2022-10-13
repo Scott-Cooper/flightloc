@@ -14,7 +14,6 @@ expo install @react-native-community/slider \
 expo install @react-native-async-storage/async-storage \
 expo install react-native-maps \
 expo install react-native-volume-manager \
-expo install expo-speech \
 
 npm install -g eas-cli \
 eas login \
@@ -26,18 +25,20 @@ eas build --profile preview --platform android
 ### https://docs.expo.dev/development/getting-started/
 expo install expo-dev-client \
 eas build --profile development --platform android \
-expo start --dev-client
+install from qr code \
+npx expo start \
+last build:  https://expo.dev/accounts/xbass/projects/flightloc/builds/5aba809e-f982-4230-90cb-4192b468e88d
 
 ## Random usefull links:
 https://reactnativeelements.com/docs \
 https://icons.expo.fyi/ \
-https://github.com/callstack/react-native-slider
+https://github.com/callstack/react-native-slider \
 https://github.com/hirbod/react-native-volume-manager
 
 ## Latest APK package build:
-SDK version:  44.0.0 \
-Version:  0.1.2 \
-Commit:  82783ba 
+SDK version:  46.0.0 \
+Version:  0.1.3 \
+Commit:  545a016 
 
 ### How to install this build on Android
 
