@@ -14,10 +14,11 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
-import TabStuffScreen from '../screens/TabStuffScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
 import TabLocationScreen from '../screens/TabLocationScreen';
 import TabSpeechScreen from '../screens/TabSpeechScreen';
+import TabStuffScreen from '../screens/TabStuffScreen';
+import TabAboutScreen from '../screens/TabAboutScreen';
 import TabTestScreen from '../screens/TabTestScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -100,6 +101,14 @@ function BottomTabNavigator() {
         options={{
           title: 'Stuff',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabAbout"
+        component={TabAboutScreen}
+        options={{
+          title: 'About',
+          tabBarIcon: ({ color }) => <TabBarIcon name="question" color={color} />,
         }}
       />
       {/* <BottomTab.Screen

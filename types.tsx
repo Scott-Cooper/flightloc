@@ -30,6 +30,7 @@ export type RootTabParamList = {
   TabLocation: undefined;
   TabSpeech: undefined;
   TabStuff: undefined;
+  TabAbout: undefined;
   TabTest: undefined;
 };
 
