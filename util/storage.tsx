@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import state from '../util/state';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import state from '../util/state'
 
   
 const saveSettings = async () => {
@@ -19,11 +19,11 @@ const saveSettings = async () => {
   storeDataValue ('settings_speechRate',  JSON.stringify(state.settings.speechRate))
   storeDataValue ('settings_speechPitch',  JSON.stringify(state.settings.speechPitch))
 }
-export { saveSettings };
+export { saveSettings }
 
 
 const getSettings = async () => {
-  // console.log("getSettings");
+  // console.log("getSettings")
   // state.settings.keycode = await getDataValue('settings_keycode') || ''
   
   // https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript/9719815
@@ -44,20 +44,20 @@ const getSettings = async () => {
   state.settings.speechPitch = eval((await AsyncStorage.getItem('settings_speechPitch')) || '1.0')
   console.log('getSettings,', state.settings)
 }
-export { getSettings };
+export { getSettings }
 
 
 const clearAppData = async function() {
   try {
-    console.log('clearAppData');
-    const keys = await AsyncStorage.getAllKeys();
+    console.log('clearAppData')
+    const keys = await AsyncStorage.getAllKeys()
     console.log('keys:', keys)
-    await AsyncStorage.multiRemove(keys);
+    await AsyncStorage.multiRemove(keys)
   } catch (error) {
-      console.error('Error clearing app data.');
+      console.error('Error clearing app data.')
   }
 }
-export { clearAppData };
+export { clearAppData }
 
 
 const storeDataValue = async (key: string, value: string) => {
@@ -75,7 +75,7 @@ const storeDataObject = async (key: string, value: object) => {
     await AsyncStorage.setItem(key, jsonValue)
     if(jsonValue != null) {
       eval(jsonValue)
-      console.log("got here 333");
+      console.log("got here 333")
       // setAllSettings(JSON.parse(jsonValue))
     }
   } catch (e) {
@@ -100,7 +100,7 @@ const getDataValue = async (key: string) => {
 const getDataObject = async (key: string) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key)
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
+    return jsonValue != null ? JSON.parse(jsonValue) : null
   } catch(e) {
     console.log('getDataObject, failed: ', e)
   }

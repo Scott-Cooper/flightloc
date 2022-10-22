@@ -1,11 +1,8 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { Button } from 'react-native';
-import state from '../util/state';
+import { Text, View } from '../components/Themed'
+import { StyleSheet, Button } from 'react-native'
 
 
 export default function TabStuffScreen() {
-
 
   const fake_fetch = async (url: string) => {
     console.log('fake_fetch running')
@@ -22,9 +19,11 @@ export default function TabStuffScreen() {
     fake_fetch('https://flightloc.pythonanywhere.com/dump_it_all_or_else')
   }
 
+
   const fake_clear = async() => {
     fake_fetch('https://flightloc.pythonanywhere.com/clear_it_all_or_else')
   }
+
 
   const fake_bootbarn = async() => {
     fake_fetch('https://flightloc.pythonanywhere.com/loc?key=135&user=Boot%20Barn&lat=37.671257&long=-97.417910&alt=1270&heading=125&speed=24.86&accuracy=17.2&alt_accuracy=35&max_distance=60&max_lag=20000&min_speed=-1')
@@ -61,9 +60,8 @@ export default function TabStuffScreen() {
       <View style={styles.separator} />
       <View style={styles.separator} />
       <Button title="Clear all records" onPress={fake_clear} />
-      {/* <Text style={styles.mono}>{JSON.stringify(state.apidata)}</Text> */}
     </View>
-  );
+  )
 
 }
 
@@ -71,20 +69,21 @@ export default function TabStuffScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     // alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 10,
-    height: 1,
-    width: '80%',
+    marginVertical: 8,
+    width: '100%',
   },
   mono: {
     fontSize: 11,
     fontFamily: 'space-mono',
   },
-});
+})

@@ -1,8 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { Button } from 'react-native';
-import { Text, View } from '../components/Themed';
-import * as Speech from 'expo-speech';
-import state from '../util/state';
+import { Text, View } from '../components/Themed'
+import { StyleSheet, Button } from 'react-native'
+import * as Speech from 'expo-speech'
+import state from '../util/state'
 
 
 
@@ -14,16 +13,16 @@ const getVoices = async () => {
   
   await new Promise((resolve) => {
     setTimeout(() => {
-      resolve(null);
-    }, 1000);
-  });
+      resolve(null)
+    }, 1000)
+  })
 
   const availableVoices = await Speech.getAvailableVoicesAsync()
   // console.log('getVoices voices', availableVoices)
   console.log('getVoices found', availableVoices.length, 'voices before filter')
   let filtered = availableVoices.filter(function(value, index, arr){ 
-    return ! value.identifier.includes("local") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
-    // return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU");
+    return ! value.identifier.includes("local") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU")
+    // return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU")
   })
 
   console.log('getVoices found', filtered.length, 'voices after filter')
@@ -47,7 +46,7 @@ const onDoneCallBack = () => {
 
 
 const speakAnything = (func: string, phrase: string) => {
-  let s = state.settings;
+  let s = state.settings
 
   if (state.still_speaking) {
     console.log('  ', func, 'still speaking')
@@ -85,22 +84,22 @@ export default function TabSpeechScreen() {
 
   const speak1 = () => {
     speakAnything('speak1', 'Chris, 1.2 miles at 4 oclock high.  Mark 2.0 miles at 12 oclock level.')
-  };
+  }
 
   const speak2 = () => {
     speakAnything('speak2', 'Hey ' + state.settings.user + ', landing zone is 2.4 miles at 7 oclock.  24 minutes till sunset.')
-  };
+  }
 
   const speak3 = () => {
     speakAnything('speak3', 'Greg is offline')
-  };
+  }
   
   const speak4 = () => {
     speakAnything('speak4', 'Current information is not available.')
-  };
+  }
   
   const speak5 = () => {
-    speakAnything('speak5', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.');
+    speakAnything('speak5', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.')
   }
 
 
@@ -133,7 +132,7 @@ export default function TabSpeechScreen() {
       <Button title="Danger" onPress={speak5} />
       <View style={styles.separator} />
     </View>
-  );
+  )
 }
 
 
@@ -153,4 +152,4 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     width: '100%',
   },
-});
+})

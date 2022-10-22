@@ -1,21 +1,21 @@
-import { StyleSheet, Image } from 'react-native';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import logo from '../assets/images/flightloc.webp'; 
-import React, { useEffect } from 'react';
-import { getSettings } from '../util/storage';
-import { getVoices } from './TabSpeechScreen';
-var pkg = require('../app.json');
+import { Text, View } from '../components/Themed'
+import { StyleSheet, Image } from 'react-native'
+import { RootTabScreenProps } from '../types'
+import logo from '../assets/images/flightloc.webp'
+import React, { useEffect } from 'react'
+import { getSettings } from '../util/storage'
+import { getVoices } from './TabSpeechScreen'
+var pkg = require('../app.json')
 
 
 export default function TabHomeScreen({ navigation }: RootTabScreenProps<'TabHome'>) {
   
   useEffect(() => {
     // Run once during load
-    // clearAppData();
-    getSettings();
-    getVoices();
-  }, []);
+    // clearAppData()
+    getSettings()
+    getVoices()
+  }, [])
 
 
   return (
@@ -24,7 +24,7 @@ export default function TabHomeScreen({ navigation }: RootTabScreenProps<'TabHom
       <Text style={styles.name}>{pkg.expo.name}</Text>
       <Text style={styles.version}>Version {pkg.expo.version}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-});
+})

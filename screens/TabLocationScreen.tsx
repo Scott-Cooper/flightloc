@@ -5,8 +5,8 @@
 // https://flightloc.pythonanywhere.com/loc?key=123&user=Field&lat=37.668453&long=-97.701083&alt=1223&heading=45&speed=25.49&accuracy=66&alt_accuracy=14.3&max_distance=20&max_lag=20000&min_speed=5
 // https://flightloc.pythonanywhere.com/loc?key=117&user=Norwich&lat=37.457929&long=-97.835638&alt=1200&heading=0&speed=24.3&accuracy=16.2&alt_accuracy=13&max_distance=20&max_lag=20000&min_speed=5
 
-import { StyleSheet } from 'react-native'
 import { Text, View } from '../components/Themed'
+import { StyleSheet } from 'react-native'
 import * as Location from 'expo-location'
 import React, { useState, useEffect } from 'react'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
@@ -41,16 +41,16 @@ export default function TabLocationScreen() {
         // returns the current volume as a float (0-1)
         // on android, the result object will also have the keys
         // music, system, ring, alarm, notification
-      });
+      })
 
       console.log('setInterval started')
       const getLoc = setInterval(async () => {
         get_gps()
       }, 3000)
 
-    })();
+    })()
 
-  }, []);
+  }, [])
 
 
   const check_vol_buttons = (vol: number) => {
@@ -85,7 +85,7 @@ export default function TabLocationScreen() {
         state.coords.timestamp = location_update["timestamp"]
         // console.log('update location:', location_update.coords)
         console.log('get_gps time      ', location_update.timestamp)
-        fetch_api(); 
+        fetch_api()
       }
     )
     console.log('get_gps complete  ' + Date.now())
@@ -140,8 +140,7 @@ export default function TabLocationScreen() {
   let text_apidata = ''
   let text_pretty_apidata = ''
   let text_spoken_apidata = ''
-  let text_random_thing = ''
-
+  
   if (errorMsg) {
     text = errorMsg
   } else if (location) {
@@ -167,6 +166,9 @@ export default function TabLocationScreen() {
         text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles,\n"
       }
     }
+
+    if(text_spoken_apidata == '') { text_spoken_apidata = 'No contacts' }
+
     // speakAnything('location', text_spoken_apidata)
     state.next_thing_to_say = text_spoken_apidata
     console.log(text_pretty_apidata)
@@ -182,7 +184,7 @@ export default function TabLocationScreen() {
       <Text style={styles.gps}>altitudeAccuracy: {parseFloat(text_altitudeAccuracy).toFixed(1)} feet</Text>
       <Text style={styles.gps}>accuracy: {parseFloat(text_accuracy).toFixed(1)} feet</Text>
       <Text style={styles.gps}>speed: {parseFloat(text_speed).toFixed(2)} mph</Text>
-      <Text style={styles.gps}>heading: {parseFloat(text_heading).toFixed(0)}</Text>
+      <Text style={styles.gps}>course: {parseFloat(text_heading).toFixed(0)}</Text>
       <Text style={styles.gps}>time: {text_time} milliseconds</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.separator} />
@@ -207,7 +209,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    // alignItems: 'center',
     alignItems: 'flex-start',
     // justifyContent: 'center',
   },

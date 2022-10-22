@@ -1,5 +1,5 @@
-import { StyleSheet, ScrollView} from 'react-native'
 import { Text, View } from '../components/Themed'
+import { StyleSheet, ScrollView, Linking} from 'react-native'
 
 
 export default function TabAboutScreen() {
@@ -10,12 +10,26 @@ export default function TabAboutScreen() {
 
         <Text style={styles.section}>About FlightLoc</Text>
         <Text style={styles.paragraph}>This app is used to help paramotor pilots find and avoid each other in the sky. It is intended to convey all information using only audio thru a bluetooth enabled helmet.</Text>
-        <Text style={styles.paragraph}>Flightloc is open source and can be found at https://github.com/Scott-Cooper/flightloc</Text>
-        <Text style={styles.paragraph}>Please send questions or comments to Scott Cooper, scottslongemailaddress@gmail.com</Text>
+        <Text style={styles.paragraph}>Flightloc is open source and can be found at 
+          <Text
+            style={styles.hyperlinkStyle}
+            onPress={() => {
+              Linking.openURL('https://github.com/Scott-Cooper/flightloc')
+            }}> https://github.com/Scott-Cooper/flightloc
+          </Text>
+        </Text>
+        <Text style={styles.paragraph}>Please send questions or comments to Scott Cooper at
+          <Text
+            style={styles.hyperlinkStyle}
+            onPress={() => {
+              Linking.openURL('mailto: scottslongemailaddress@gmail.com')
+            }}> scottslongemailaddress@gmail.com
+          </Text>
+        </Text>
 
         <Text style={styles.section}>Bluetooth Button</Text>
         <Text style={styles.paragraph}>I recommend using a CamKix, Zodiac, Xenvo, or similar remote photo shutter button.</Text>
-        <Text style={styles.paragraph}>All of these devices emulate a volume button press and can be found on Amazon.</Text>
+        <Text style={styles.paragraph}>All of these devices emulate a volume button press, and can be found on Amazon.</Text>
 
         <Text style={styles.section}>Usage</Text>
         <Text style={styles.paragraph}>Always confirm information on the Settings tab.</Text>
@@ -66,5 +80,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 10,
   },
+  hyperlinkStyle: {
+    color: '#88f',
+  },
 })
-
