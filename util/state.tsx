@@ -4,6 +4,7 @@ export default {
     user: 'Unknown',
     isIncludeCollision: true,
     isIncludeBearing: true,
+    isIncludeCourse: true,
     isIncludeAltitude: true,
     gpsUpdatesPerMinute: 1,
     maxDistance: 1,

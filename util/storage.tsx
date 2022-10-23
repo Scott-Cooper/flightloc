@@ -9,6 +9,7 @@ const saveSettings = async () => {
   storeDataValue ('settings_user', state.settings.user)
   storeDataValue ('settings_isIncludeCollision',  JSON.stringify(state.settings.isIncludeCollision))
   storeDataValue ('settings_isIncludeBearing',  JSON.stringify(state.settings.isIncludeBearing))
+  storeDataValue ('settings_isIncludeCourse',  JSON.stringify(state.settings.isIncludeCourse))
   storeDataValue ('settings_isIncludeAltitude',  JSON.stringify(state.settings.isIncludeAltitude))
   storeDataValue ('settings_gpsUpdatesPerMinute',  JSON.stringify(state.settings.gpsUpdatesPerMinute))
   storeDataValue ('settings_maxDistance',  JSON.stringify(state.settings.maxDistance))
@@ -24,7 +25,6 @@ export { saveSettings }
 
 const getSettings = async () => {
   // console.log("getSettings")
-  // state.settings.keycode = await getDataValue('settings_keycode') || ''
   
   // https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript/9719815
   var random_keycode = Math.random().toString(36).substr(2, 8)
@@ -32,7 +32,8 @@ const getSettings = async () => {
   state.settings.keycode = await AsyncStorage.getItem('settings_keycode') || random_keycode
   state.settings.user = await AsyncStorage.getItem('settings_user') || 'Unknown'
   state.settings.isIncludeCollision = eval((await AsyncStorage.getItem('settings_isIncludeCollision')) || 'true')
-  state.settings.isIncludeBearing = eval((await AsyncStorage.getItem('settings_isIncludeBearing')) || 'false')
+  state.settings.isIncludeBearing = eval((await AsyncStorage.getItem('settings_isIncludeBearing')) || 'true')
+  state.settings.isIncludeCourse = eval((await AsyncStorage.getItem('settings_isIncludeCourse')) || 'false')
   state.settings.isIncludeAltitude = eval((await AsyncStorage.getItem('settings_isIncludeAltitude')) || 'false')
   state.settings.gpsUpdatesPerMinute = eval((await AsyncStorage.getItem('settings_gpsUpdatesPerMinute')) || '3')
   state.settings.maxDistance = eval((await AsyncStorage.getItem('settings_maxDistance')) || '25')

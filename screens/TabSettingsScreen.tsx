@@ -13,10 +13,12 @@ export default function TabSettingsScreen() {
   const [user, setuser] = useState('')
   const [isIncludeCollision, setIsIncludeCollision] = useState(false)
   const [isIncludeBearing, setIsIncludeBearing] = useState(false)
+  const [isIncludeCourse, setIsIncludeCourse] = useState(false)
   const [isIncludeAltitude, setIsIncludeAltitude] = useState(false)
   const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState)
   const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
-  const toggleSwitch3 = () => setIsIncludeAltitude(previousState => !previousState)
+  const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
+  const toggleSwitch4 = () => setIsIncludeAltitude(previousState => !previousState)
 
   const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(1)
   const [maxDistance, setMaxDistance] = useState(1)
@@ -39,6 +41,7 @@ export default function TabSettingsScreen() {
     state.settings.user = user
     state.settings.isIncludeCollision = isIncludeCollision
     state.settings.isIncludeBearing = isIncludeBearing
+    state.settings.isIncludeCourse = isIncludeCourse
     state.settings.isIncludeAltitude = isIncludeAltitude
     state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute
     state.settings.maxDistance = maxDistance
@@ -59,6 +62,7 @@ export default function TabSettingsScreen() {
     setuser(state.settings.user)
     setIsIncludeCollision(state.settings.isIncludeCollision)
     setIsIncludeBearing(state.settings.isIncludeBearing)
+    setIsIncludeCourse(state.settings.isIncludeCourse)
     setIsIncludeAltitude(state.settings.isIncludeAltitude)
     setGpsUpdatesPerMinute(state.settings.gpsUpdatesPerMinute)
     setMaxDistance(state.settings.maxDistance)
@@ -151,9 +155,21 @@ export default function TabSettingsScreen() {
         <View style={styles.section}>
           <Switch
             trackColor={{ false: '#777', true: '#8cf' }}
-            thumbColor={isIncludeAltitude ? '#0bf' : '#fff'}
+            thumbColor={isIncludeCourse ? '#0bf' : '#fff'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch3}
+            value={isIncludeCourse}
+          />
+          <Text style={styles.paragraph}>Include absolute course</Text>
+          {/* <Text>{isIncludeCourse ? ', On' : ', Off'}</Text> */}
+        </View>
+
+        <View style={styles.section}>
+          <Switch
+            trackColor={{ false: '#777', true: '#8cf' }}
+            thumbColor={isIncludeAltitude ? '#0bf' : '#fff'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch4}
             value={isIncludeAltitude}
           />
           <Text style={styles.paragraph}>Include altitude</Text>
