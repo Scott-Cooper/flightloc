@@ -83,12 +83,15 @@ export default function TabSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Settings</Text> */}
-      <View style={styles.separator} lightColor="#333" darkColor="#444" />
+      {/* <View style={styles.separator} lightColor="#333" darkColor="#444" /> */}
     
       <ScrollView style={styles.scrollView}>
 
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
+          <Text style={styles.paragraph}>Key code:  {keycode}</Text>
+        </View> */}
+
+        {/* <View style={styles.section}>
           <Text style={styles.paragraph}>Key code </Text>
           <TextInput
             style={styles.input}
@@ -101,9 +104,9 @@ export default function TabSettingsScreen() {
             // underlineColorAndroid='#f00'
             keyboardType="default"
           />
-        </View>
+        </View> */}
 
-        <View style={styles.separator}/>
+        {/* <View style={styles.separator}/> */}
 
         <View style={styles.section}>
           <Text style={styles.paragraph}>Pilot name </Text>
@@ -118,6 +121,8 @@ export default function TabSettingsScreen() {
             keyboardType="default"
           />
         </View>
+
+        <View style={styles.separator} lightColor="#333" darkColor="#444" />
 
         <View style={styles.section}>
           <Switch
@@ -286,7 +291,6 @@ export default function TabSettingsScreen() {
 }
 
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -349,4 +353,3 @@ const styles = StyleSheet.create({
     // backgroundColor: '#f774',
   },
 })
-
