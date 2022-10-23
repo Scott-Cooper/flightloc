@@ -1,9 +1,10 @@
 // https://flightloc.pythonanywhere.com/dump_it_all_or_else
 // https://flightloc.pythonanywhere.com/clear_it_all_or_else
-// https://flightloc.pythonanywhere.com/loc?key=135&user=Boot%20barn&lat=37.67125787023003&long=-97.41791096809567&alt=1250&heading=186&speed=19.86&accuracy=23.2&alt_accuracy=30&max_distance=25&max_lag=20000&min_speed=5
-// https://flightloc.pythonanywhere.com/loc?key=205&user=Vortac&lat=37.745261&long=-97.583838&alt=1278&heading=85&speed=31.23&accuracy=37&alt_accuracy=29.6&max_distance=19&max_lag=20000&min_speed=5
-// https://flightloc.pythonanywhere.com/loc?key=123&user=Field&lat=37.668453&long=-97.701083&alt=1223&heading=45&speed=25.49&accuracy=66&alt_accuracy=14.3&max_distance=20&max_lag=20000&min_speed=5
-// https://flightloc.pythonanywhere.com/loc?key=117&user=Norwich&lat=37.457929&long=-97.835638&alt=1200&heading=0&speed=24.3&accuracy=16.2&alt_accuracy=13&max_distance=20&max_lag=20000&min_speed=5
+// https://flightloc.pythonanywhere.com/loc?key=fake135&user=Boot%20Barn&lat=37.671257&long=-97.417910&alt=1270&heading=125&speed=24.86&accuracy=17.2&alt_accuracy=35&max_distance=60&max_lag=20000&min_speed=-1
+// https://flightloc.pythonanywhere.com/loc?key=fake205&user=Vortac&lat=37.745261&long=-97.583838&alt=1278&heading=182&speed=8.23&accuracy=19&alt_accuracy=79&max_distance=60&max_lag=20000&min_speed=-1
+// https://flightloc.pythonanywhere.com/loc?key=fake923&user=Field&lat=37.668453&long=-97.701083&alt=1302&heading=45&speed=27.49&accuracy=36&alt_accuracy=143&max_distance=60&max_lag=20000&min_speed=-1
+// https://flightloc.pythonanywhere.com/loc?key=fake117&user=Norwich&lat=37.457929&long=-97.835638&alt=1200&heading=0&speed=24.3&accuracy=16.2&alt_accuracy=13&max_distance=20&max_lag=20000&min_speed=5
+
 
 import { Text, View } from '../components/Themed'
 import { StyleSheet } from 'react-native'
@@ -11,6 +12,7 @@ import * as Location from 'expo-location'
 import React, { useState, useEffect } from 'react'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import state from '../util/state'
+import { convert_angle_to_spoken_digits } from '../util/misc'
 import { speakAnything }  from './TabSpeechScreen'
 import { getVolume, VolumeManager } from 'react-native-volume-manager'
 
@@ -161,7 +163,8 @@ export default function TabLocationScreen() {
       text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
 
       if (state.settings.isIncludeBearing) {
-        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + p[key]['bearing'].toFixed(0) + ",\n"
+        // text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + p[key]['bearing'].toFixed(0) + ",\n"
+        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + convert_angle_to_spoken_digits(p[key]['bearing']) + ",\n"
       } else {
         text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles,\n"
       }
