@@ -162,12 +162,21 @@ export default function TabLocationScreen() {
     for (let key in p) {
       text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
 
+      text_spoken_apidata += p[key]['user'] + ' ' + p[key]['dis'].toFixed(1) + ' miles'
       if (state.settings.isIncludeBearing) {
-        // text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + p[key]['bearing'].toFixed(0) + ",\n"
-        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles bearing " + convert_angle_to_spoken_digits(p[key]['bearing']) + ",\n"
-      } else {
-        text_spoken_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles,\n"
+        text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(p[key]['bearing'])
       }
+      if (state.settings.isIncludeCourse) {
+        text_spoken_apidata += ", course " + convert_angle_to_spoken_digits(p[key]['heading'])
+      }
+      if (state.settings.isIncludeAltitude) {
+        var ralt = p[key]['alt'] - (location["coords"]["altitude"] * 3.28084) 
+        var salt = ', level'
+        if (ralt < -200) { salt = ', low' }
+        if (ralt > 200) { salt = ', high' }
+        text_spoken_apidata += salt
+      }
+      text_spoken_apidata += ".\n"
     }
 
     if(text_spoken_apidata == '') { text_spoken_apidata = 'No contacts' }

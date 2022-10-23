@@ -41,17 +41,17 @@ export default function TabStuffScreen() {
   }
 
 
-  function make_fake_mr_rando() {
-    make_fake_rando('fake773', 'Mr. Rando')
+  function make_fake_kevin() {
+    make_fake_pilot('fake773', 'Kevin')
   }
 
 
-  function make_fake_mrs_rando() {
-    make_fake_rando('fake377', 'Mrs. Rando')
+  function make_fake_karen() {
+    make_fake_pilot('fake377', 'Karen')
   }
 
 
-  function make_fake_rando(r_key: string, r_name: string) {
+  function make_fake_pilot(r_key: string, r_name: string) {
     // Be sure to get our own GPS fix before using this button.
     // This will always be relative to the last person to press it.
     var r_lat =  (state.coords.latitude + Math.random()*0.2-0.1).toFixed(4).toString()
@@ -74,9 +74,9 @@ export default function TabStuffScreen() {
       <View style={styles.separator} />
       <Button title="Fake Norwich" onPress={fake_norwich} />
       <View style={styles.separator} />
-      <Button title="Fake Mr. Rando" onPress={make_fake_mr_rando} />
+      <Button title="Fake Kevin" onPress={make_fake_kevin} />
       <View style={styles.separator} />
-      <Button title="Fake Mrs. Rando" onPress={make_fake_mrs_rando} />
+      <Button title="Fake Karen" onPress={make_fake_karen} />
       <View style={styles.separator} />
       <View style={styles.separator} />
       <View style={styles.separator} />
