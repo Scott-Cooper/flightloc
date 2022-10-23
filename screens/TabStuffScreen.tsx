@@ -41,11 +41,21 @@ export default function TabStuffScreen() {
   }
 
 
+  function make_fake_mr_rando() {
+    make_fake_rando('fake773', 'Mr. Rando')
+  }
+
+
+  function make_fake_mrs_rando() {
+    make_fake_rando('fake377', 'Mrs. Rando')
+  }
+
+
   function make_fake_rando(r_key: string, r_name: string) {
-// make_fake_rando = (r_key: string, r_name: string) => {
     // Be sure to get our own GPS fix before using this button.
-    var r_lat =  (state.coords.latitude + Math.random()*1.0-0.5).toFixed(4).toString()
-    var r_long = (state.coords.longitude + Math.random()*1.0-0.5).toFixed(4).toString()
+    // This will always be relative to the last person to press it.
+    var r_lat =  (state.coords.latitude + Math.random()*0.2-0.1).toFixed(4).toString()
+    var r_long = (state.coords.longitude + Math.random()*0.2-0.1).toFixed(4).toString()
     var r_alt =  (state.coords.altitude + Math.random()*1000-500).toFixed(4).toString()
     var r_head =  (Math.random()*365).toFixed(4).toString()
     var r_speed =  (Math.random()*20+10).toFixed(4).toString()
@@ -64,9 +74,9 @@ export default function TabStuffScreen() {
       <View style={styles.separator} />
       <Button title="Fake Norwich" onPress={fake_norwich} />
       <View style={styles.separator} />
-      <Button title="Fake Mr. Rando" onPress={make_fake_rando('fake773', 'Mr. Rando')} />
+      <Button title="Fake Mr. Rando" onPress={make_fake_mr_rando} />
       <View style={styles.separator} />
-      <Button title="Fake Mrs. Rando" onPress={make_fake_rando('fake377', 'Mrs. Rando')} />
+      <Button title="Fake Mrs. Rando" onPress={make_fake_mrs_rando} />
       <View style={styles.separator} />
       <View style={styles.separator} />
       <View style={styles.separator} />
