@@ -3,20 +3,11 @@ import { StyleSheet, Image } from 'react-native'
 import { RootTabScreenProps } from '../types'
 import logo from '../assets/images/flightloc.webp'
 import React, { useEffect } from 'react'
-import { getSettings } from '../util/storage'
-import { getVoices } from './TabSpeechScreen'
 var pkg = require('../app.json')
 
 
 export default function TabHomeScreen({ navigation }: RootTabScreenProps<'TabHome'>) {
   
-  useEffect(() => {
-    // Run once during load
-    // clearAppData()
-    getSettings()
-    getVoices()
-  }, [])
-
 
   return (
     <View style={styles.container}>
@@ -26,6 +17,7 @@ export default function TabHomeScreen({ navigation }: RootTabScreenProps<'TabHom
     </View>
   )
 }
+
 
 const styles = StyleSheet.create({
   container: {

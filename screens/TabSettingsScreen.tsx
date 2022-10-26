@@ -9,31 +9,49 @@ import { speakAnything } from './TabSpeechScreen'
 
 export default function TabSettingsScreen() {
 
-  const [keycode, setkeycode] = useState('')
-  const [user, setuser] = useState('')
-  const [isIncludeCollision, setIsIncludeCollision] = useState(false)
-  const [isIncludeBearing, setIsIncludeBearing] = useState(false)
-  const [isIncludeCourse, setIsIncludeCourse] = useState(false)
-  const [isIncludeAltitude, setIsIncludeAltitude] = useState(false)
+  // const [keycode, setkeycode] = useState('')
+  // const [user, setuser] = useState('')
+  // const [isIncludeCollision, setIsIncludeCollision] = useState(false)
+  // const [isIncludeBearing, setIsIncludeBearing] = useState(false)
+  // const [isIncludeCourse, setIsIncludeCourse] = useState(false)
+  // const [isIncludeAltitude, setIsIncludeAltitude] = useState(false)
+  // const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(2)
+  // const [maxDistance, setMaxDistance] = useState(2)
+  // const [maxLag, setMaxLag] = useState(2)
+  // const [minSpeed, setMinSpeed] = useState(2)
+  // const [maxContacts, setMaxContacts] = useState(2)
+  // const [speechVoice, setSpeechVoice] = useState(2)
+  // const [speechRate, setSpeechRate] = useState(2)
+  // const [speechPitch, setSpeechPitch] = useState(2)
+  // const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState)
+  // const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
+  // const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
+  // const toggleSwitch4 = () => setIsIncludeAltitude(previousState => !previousState)
+
+  const [keycode, setkeycode] = useState(state.settings.keycode)
+  const [user, setuser] = useState(state.settings.user)
+  const [isIncludeCollision, setIsIncludeCollision] = useState(state.settings.isIncludeCollision)
+  const [isIncludeBearing, setIsIncludeBearing] = useState(state.settings.isIncludeBearing)
+  const [isIncludeCourse, setIsIncludeCourse] = useState(state.settings.isIncludeCourse)
+  const [isIncludeAltitude, setIsIncludeAltitude] = useState(state.settings.isIncludeAltitude)
+  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(state.settings.gpsUpdatesPerMinute)
+  const [maxDistance, setMaxDistance] = useState(state.settings.maxDistance)
+  const [maxLag, setMaxLag] = useState(state.settings.maxLag)
+  const [minSpeed, setMinSpeed] = useState(state.settings.minSpeed)
+  const [maxContacts, setMaxContacts] = useState(state.settings.maxContacts)
+  const [speechVoice, setSpeechVoice] = useState(state.settings.speechVoice)
+  const [speechRate, setSpeechRate] = useState(state.settings.speechRate)
+  const [speechPitch, setSpeechPitch] = useState(state.settings.speechPitch)
   const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState)
   const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
   const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
   const toggleSwitch4 = () => setIsIncludeAltitude(previousState => !previousState)
 
-  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(1)
-  const [maxDistance, setMaxDistance] = useState(1)
-  const [maxLag, setMaxLag] = useState(1)
-  const [minSpeed, setMinSpeed] = useState(1)
-  const [maxContacts, setMaxContacts] = useState(1)
-  const [speechVoice, setSpeechVoice] = useState(1)
-  const [speechRate, setSpeechRate] = useState(1)
-  const [speechPitch, setSpeechPitch] = useState(1)
 
-
-  useEffect(() => {
-    // Run once during load
-    retreive_all_settings()
-  }, [])
+  // useEffect(() => {
+  //   // Run once during load
+  //   // retreive_all_settings()
+  // }, [])
 
 
   function save_all_settings() {
@@ -81,8 +99,8 @@ export default function TabSettingsScreen() {
     setSpeechVoice(speechVoice)
   }
 
+  
   console.log("render TabSettingsScreen")
-  // console.log("state:", state)
   
 
   return (
