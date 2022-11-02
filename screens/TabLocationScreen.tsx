@@ -12,7 +12,7 @@ import * as Location from 'expo-location'
 import React, { useState, useEffect } from 'react'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import state from '../util/state'
-import { convert_angle_to_spoken_digits } from '../util/misc'
+import { convert_angle_to_spoken_digits, convert_bearing_to_spoken_clock } from '../util/misc'
 import { speakAnything }  from './TabSpeechScreen'
 import { getVolume, VolumeManager } from 'react-native-volume-manager'
 
@@ -164,7 +164,11 @@ export default function TabLocationScreen() {
 
       text_spoken_apidata += p[key]['user'] + ' ' + p[key]['dis'].toFixed(1) + ' miles'
       if (state.settings.isIncludeBearing) {
-        text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(p[key]['bearing'])
+        if (state.settings.isRelativeClock) {
+          text_spoken_apidata += ", at your " + convert_bearing_to_spoken_clock(p[key]['bearing'])
+        } else {
+          text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(p[key]['bearing'])
+        }
       }
       if (state.settings.isIncludeCourse) {
         text_spoken_apidata += ", course " + convert_angle_to_spoken_digits(p[key]['heading'])

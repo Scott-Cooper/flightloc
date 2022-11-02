@@ -9,31 +9,13 @@ import { speakAnything } from './TabSpeechScreen'
 
 export default function TabSettingsScreen() {
 
-  // const [keycode, setkeycode] = useState('')
-  // const [user, setuser] = useState('')
-  // const [isIncludeCollision, setIsIncludeCollision] = useState(false)
-  // const [isIncludeBearing, setIsIncludeBearing] = useState(false)
-  // const [isIncludeCourse, setIsIncludeCourse] = useState(false)
-  // const [isIncludeAltitude, setIsIncludeAltitude] = useState(false)
-  // const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(2)
-  // const [maxDistance, setMaxDistance] = useState(2)
-  // const [maxLag, setMaxLag] = useState(2)
-  // const [minSpeed, setMinSpeed] = useState(2)
-  // const [maxContacts, setMaxContacts] = useState(2)
-  // const [speechVoice, setSpeechVoice] = useState(2)
-  // const [speechRate, setSpeechRate] = useState(2)
-  // const [speechPitch, setSpeechPitch] = useState(2)
-  // const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState)
-  // const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
-  // const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
-  // const toggleSwitch4 = () => setIsIncludeAltitude(previousState => !previousState)
-
   const [keycode, setkeycode] = useState(state.settings.keycode)
   const [user, setuser] = useState(state.settings.user)
   const [isIncludeCollision, setIsIncludeCollision] = useState(state.settings.isIncludeCollision)
   const [isIncludeBearing, setIsIncludeBearing] = useState(state.settings.isIncludeBearing)
   const [isIncludeCourse, setIsIncludeCourse] = useState(state.settings.isIncludeCourse)
   const [isIncludeAltitude, setIsIncludeAltitude] = useState(state.settings.isIncludeAltitude)
+  const [isRelativeClock, setIsRelativeClock] = useState(state.settings.isRelativeClock)
   const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(state.settings.gpsUpdatesPerMinute)
   const [maxDistance, setMaxDistance] = useState(state.settings.maxDistance)
   const [maxLag, setMaxLag] = useState(state.settings.maxLag)
@@ -46,12 +28,7 @@ export default function TabSettingsScreen() {
   const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
   const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
   const toggleSwitch4 = () => setIsIncludeAltitude(previousState => !previousState)
-
-
-  // useEffect(() => {
-  //   // Run once during load
-  //   // retreive_all_settings()
-  // }, [])
+  const toggleSwitch5 = () => setIsRelativeClock(previousState => !previousState)
 
 
   function save_all_settings() {
@@ -61,6 +38,7 @@ export default function TabSettingsScreen() {
     state.settings.isIncludeBearing = isIncludeBearing
     state.settings.isIncludeCourse = isIncludeCourse
     state.settings.isIncludeAltitude = isIncludeAltitude
+    state.settings.isRelativeClock = isRelativeClock
     state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute
     state.settings.maxDistance = maxDistance
     state.settings.maxLag = maxLag
@@ -71,26 +49,6 @@ export default function TabSettingsScreen() {
     state.settings.speechPitch = speechPitch
     console.log("save_all_settings:  state.settings: ", state.settings)
     saveSettings()
-  }
-
-
-  function retreive_all_settings() {
-    console.log("retreive_all_settings running")
-    setkeycode(state.settings.keycode)
-    setuser(state.settings.user)
-    setIsIncludeCollision(state.settings.isIncludeCollision)
-    setIsIncludeBearing(state.settings.isIncludeBearing)
-    setIsIncludeCourse(state.settings.isIncludeCourse)
-    setIsIncludeAltitude(state.settings.isIncludeAltitude)
-    setGpsUpdatesPerMinute(state.settings.gpsUpdatesPerMinute)
-    setMaxDistance(state.settings.maxDistance)
-    setMaxLag(state.settings.maxLag)
-    setMinSpeed(state.settings.minSpeed)
-    setMaxContacts(state.settings.maxContacts)
-    setSpeechVoice(state.settings.speechVoice)
-    setSpeechRate(state.settings.speechRate)
-    setSpeechPitch(state.settings.speechPitch)
-    console.log("retreive_all_settings:  state.settings: ", state.settings)
   }
 
 
@@ -108,27 +66,6 @@ export default function TabSettingsScreen() {
       {/* <View style={styles.separator} lightColor="#333" darkColor="#444" /> */}
     
       <ScrollView style={styles.scrollView}>
-
-        {/* <View style={styles.section}>
-          <Text style={styles.paragraph}>Key code:  {keycode}</Text>
-        </View> */}
-
-        {/* <View style={styles.section}>
-          <Text style={styles.paragraph}>Key code </Text>
-          <TextInput
-            style={styles.input}
-            // onChangeText={text => on_change_keycode(text)}
-            onChangeText={text => setkeycode(text)}
-            value={keycode}
-            placeholder="Key code              "
-            placeholderTextColor='#666'
-            // selectionColor='#f00'
-            // underlineColorAndroid='#f00'
-            keyboardType="default"
-          />
-        </View> */}
-
-        {/* <View style={styles.separator}/> */}
 
         <View style={styles.section}>
           <Text style={styles.paragraph}>Pilot name </Text>
@@ -192,6 +129,18 @@ export default function TabSettingsScreen() {
           />
           <Text style={styles.paragraph}>Include altitude</Text>
           {/* <Text>{isIncludeAltitude ? ', On' : ', Off'}</Text> */}
+        </View>
+
+        <View style={styles.section}>
+          <Switch
+            trackColor={{ false: '#777', true: '#8cf' }}
+            thumbColor={isRelativeClock ? '#0bf' : '#fff'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch5}
+            value={isRelativeClock}
+          />
+          <Text style={styles.paragraph}>Relative clock directions</Text>
+          {/* <Text>{isRelativeClock ? ', On' : ', Off'}</Text> */}
         </View>
 
         <View style={styles.separator} lightColor="#333" darkColor="#444" />

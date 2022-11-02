@@ -1,3 +1,5 @@
+import state from '../util/state'
+
 
 function convert_angle_to_spoken_digits(n: number): string {
   // Normally aircraft angles are not spoken like "bearing two hundred and thirty nine",
@@ -8,7 +10,6 @@ function convert_angle_to_spoken_digits(n: number): string {
   var c1 = character_pronunciation(s[1])
   var c2 = character_pronunciation(s[2])
   var cr = c0  + ' ' + c1 + ' ' + c2
-  console.log("convert_angle_to_spoken_digits:  ", s, cr)
   return cr
 }
 export { convert_angle_to_spoken_digits }
@@ -49,3 +50,12 @@ function character_pronunciation(c: string): string {
     default: { return c }
   }
 }
+
+
+function convert_bearing_to_spoken_clock(bearing: number): string {
+  // Any rcbearing between -15 and 15 should be 12 oclock
+  var rcbearing = ((720 + bearing - state.coords.heading - 15) % 360) / 30
+  return rcbearing.toFixed(0).toString() + ' oclock'
+}
+export { convert_bearing_to_spoken_clock }
+

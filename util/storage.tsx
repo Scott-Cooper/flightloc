@@ -35,6 +35,7 @@ const getSettings = async () => {
   state.settings.isIncludeBearing = eval((await AsyncStorage.getItem('settings_isIncludeBearing')) || 'true')
   state.settings.isIncludeCourse = eval((await AsyncStorage.getItem('settings_isIncludeCourse')) || 'false')
   state.settings.isIncludeAltitude = eval((await AsyncStorage.getItem('settings_isIncludeAltitude')) || 'false')
+  state.settings.isRelativeClock = eval((await AsyncStorage.getItem('settings_isRelativeClock')) || 'true')
   state.settings.gpsUpdatesPerMinute = eval((await AsyncStorage.getItem('settings_gpsUpdatesPerMinute')) || '3')
   state.settings.maxDistance = eval((await AsyncStorage.getItem('settings_maxDistance')) || '25')
   state.settings.maxLag = eval((await AsyncStorage.getItem('settings_maxLag')) || '30.0')
