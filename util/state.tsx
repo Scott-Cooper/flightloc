@@ -6,6 +6,7 @@ export default {
     isIncludeBearing: true,
     isIncludeCourse: true,
     isIncludeAltitude: true,
+    isRelativeClock: true,
     gpsUpdatesPerMinute: 1,
     maxDistance: 1,
     maxLag: 1,
