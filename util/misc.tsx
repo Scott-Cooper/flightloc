@@ -53,9 +53,10 @@ function character_pronunciation(c: string): string {
 
 
 function convert_bearing_to_spoken_clock(bearing: number): string {
-  // Any rcbearing between -15 and 15 should be 12 oclock
-  var rcbearing = ((720 + bearing - state.coords.heading - 15) % 360) / 30
-  return rcbearing.toFixed(0).toString() + ' oclock'
+  // Any rcbearing between -15 and 14.999 should be 12 oclock
+  var rcbearing_str = (((720 + bearing - state.coords.heading ) % 360) / 30).toFixed(0).toString()
+  if (rcbearing_str == '0') { rcbearing_str = '12' }
+  return rcbearing_str + ' oclock'
 }
 export { convert_bearing_to_spoken_clock }
 
