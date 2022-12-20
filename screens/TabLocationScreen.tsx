@@ -62,7 +62,14 @@ export default function TabLocationScreen() {
     // speakAnything('location volume test', "Vol button was pressed." + newvol)
     speakAnything('location', state.next_thing_to_say)
     // state.still_speaking = true
-    // await VolumeManager.setVolume(0.7)
+    // await VolumeManager.setVolume(vol)
+    setVolume(vol)
+  }
+
+
+  const setVolume = async (vol: number) => {
+    console.log('setVolume running  ', Date.now(), vol)
+    await VolumeManager.setVolume(vol)
   }
 
 
@@ -95,7 +102,17 @@ export default function TabLocationScreen() {
 
 
   const fetch_api = async () => {
+    if (state.coords.timestamp == state.coords.lasttimestamp) {
+      // Gets here when flightloc goes to the background for a while, then goes foreground.
+      // If this happens there will be a shit ton of queued requests that are all the same, so
+      // we simply skip them because they are identical.
+      console.log('fetch_api complete with duplicate')
+      return
+    }
+
+    state.coords.lasttimestamp = state.coords.timestamp
     console.log('fetch_api running  ' + Date.now())
+
     // try {
       let url = 'https://flightloc.pythonanywhere.com/loc?'
       url += 'key=' + state.settings.keycode
@@ -187,7 +204,7 @@ export default function TabLocationScreen() {
 
     // speakAnything('location', text_spoken_apidata)
     state.next_thing_to_say = text_spoken_apidata
-    console.log(text_pretty_apidata)
+    console.log("\n" + text_pretty_apidata)
     // console.log(state)
   }
 

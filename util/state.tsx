@@ -25,6 +25,7 @@ export default {
     accuracy: 1,
     altitudeAccuracy: 1,
     timestamp: 1,
+    lasttimestamp: 1,
   },
   still_speaking: false,
   next_thing_to_say: '',
