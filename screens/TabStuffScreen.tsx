@@ -54,12 +54,12 @@ export default function TabStuffScreen() {
   function make_fake_pilot(r_key: string, r_name: string) {
     // Be sure to get our own GPS fix before using this button.
     // This will always be relative to the last person to press it.
-    var r_lat =  (state.coords.latitude + Math.random()*0.2-0.1).toFixed(4).toString()
-    var r_long = (state.coords.longitude + Math.random()*0.2-0.1).toFixed(4).toString()
-    var r_alt =  (state.coords.altitude + Math.random()*1000-500).toFixed(4).toString()
-    var r_head =  (Math.random()*365).toFixed(4).toString()
-    var r_speed =  (Math.random()*20+10).toFixed(4).toString()
-    var pilot_url ='https://flightloc.pythonanywhere.com/loc?key=' + r_key + '&user=' + r_name + '&lat=' + r_lat + '&long=' + r_long + '&alt=' + r_alt + '&heading=' + r_head + '&speed=' + r_speed + '&accuracy=17.0&alt_accuracy=30&max_distance=50&max_lag=20000&min_speed=-1'
+    let r_lat =  (state.coords.latitude + Math.random()*0.2-0.1).toFixed(4).toString()
+    let r_long = (state.coords.longitude + Math.random()*0.2-0.1).toFixed(4).toString()
+    let r_alt =  (state.coords.altitude + Math.random()*1000-500).toFixed(4).toString()
+    let r_head =  (Math.random()*365).toFixed(4).toString()
+    let r_speed =  (Math.random()*20+10).toFixed(4).toString()
+    let pilot_url ='https://flightloc.pythonanywhere.com/loc?key=' + r_key + '&user=' + r_name + '&lat=' + r_lat + '&long=' + r_long + '&alt=' + r_alt + '&heading=' + r_head + '&speed=' + r_speed + '&accuracy=17.0&alt_accuracy=30&max_distance=50&max_lag=20000&min_speed=-1'
     fake_fetch(pilot_url)
   }
 

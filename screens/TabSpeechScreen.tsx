@@ -4,7 +4,6 @@ import * as Speech from 'expo-speech'
 import state from '../util/state'
 
 
-
 const getVoices = async () => {
 
   // Because of a bug in getAvailableVoicesAsync, we have to call it twice with a short 

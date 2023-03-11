@@ -27,7 +27,7 @@ const getSettings = async () => {
   // console.log("getSettings")
   
   // https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript/9719815
-  var random_keycode = Math.random().toString(36).substr(2, 8)
+  let random_keycode = Math.random().toString(36).substr(2, 8)
 
   state.settings.keycode = await AsyncStorage.getItem('settings_keycode') || random_keycode
   state.settings.user = await AsyncStorage.getItem('settings_user') || 'Unknown'

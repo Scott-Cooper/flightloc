@@ -5,11 +5,11 @@ function convert_angle_to_spoken_digits(n: number): string {
   // Normally aircraft angles are not spoken like "bearing two hundred and thirty nine",
   // more like "bearing two three niner"
   // https://mediawiki.ivao.aero/index.php?title=Radio_telephony_basics
-  var s = n.toFixed(0).padStart(3, '0')
-  var c0 = character_pronunciation(s[0])
-  var c1 = character_pronunciation(s[1])
-  var c2 = character_pronunciation(s[2])
-  var cr = c0  + ' ' + c1 + ' ' + c2
+  let s = n.toFixed(0).padStart(3, '0')
+  let c0 = character_pronunciation(s[0])
+  let c1 = character_pronunciation(s[1])
+  let c2 = character_pronunciation(s[2])
+  let cr = c0  + ' ' + c1 + ' ' + c2
   return cr
 }
 export { convert_angle_to_spoken_digits }
@@ -54,7 +54,7 @@ function character_pronunciation(c: string): string {
 
 function convert_bearing_to_spoken_clock(bearing: number): string {
   // Any rcbearing between -15 and 14.999 should be 12 oclock
-  var rcbearing_str = (((720 + bearing - state.coords.heading ) % 360) / 30).toFixed(0).toString()
+  let rcbearing_str = (((720 + bearing - state.coords.heading ) % 360) / 30).toFixed(0).toString()
   if (rcbearing_str == '0') { rcbearing_str = '12' }
   return rcbearing_str + ' oclock'
 }
