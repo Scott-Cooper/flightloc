@@ -9,6 +9,7 @@ expo whoami \
 expo install expo-location \
 expo install expo-speech \
 expo install expo-checkbox \
+expo install expo-av \
 expo install @react-native-community/slider \
 expo install @react-native-async-storage/async-storage \
 expo install react-native-maps \
@@ -29,7 +30,7 @@ eas login \
 eas whoami \
 eas build --profile development --platform android \
 install from qr code \
-npx expo start \
+expo start --dev-client \
 last build:  https://expo.dev/accounts/xbass/projects/flightloc/builds/5aba809e-f982-4230-90cb-4192b468e88d
 
 ## Latest builds:

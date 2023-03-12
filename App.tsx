@@ -4,7 +4,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { getSettings } from './util/storage'
-import { getVoices } from './screens/TabSpeechScreen'
+import { getVoices } from './util/speech'
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

@@ -1,86 +1,11 @@
 import { Text, View } from '../components/Themed'
 import { StyleSheet, Button } from 'react-native'
-import * as Speech from 'expo-speech'
 import state from '../util/state'
-
-
-const getVoices = async () => {
-
-  // Because of a bug in getAvailableVoicesAsync, we have to call it twice with a short 
-  // delay between calls.  Why this works is a mystery to me.  WTF
-  await Speech.getAvailableVoicesAsync()
-  
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(null)
-    }, 1000)
-  })
-
-  const availableVoices = await Speech.getAvailableVoicesAsync()
-  // console.log('getVoices voices', availableVoices)
-  console.log('getVoices found', availableVoices.length, 'voices before filter')
-  let filtered = availableVoices.filter(function(value, index, arr){ 
-    return ! value.identifier.includes("local") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU")
-    // return ! value.identifier.includes("network") && (value.language == "en-GB" || value.language == "en-US" || value.language == "en-AU")
-  })
-
-  console.log('getVoices found', filtered.length, 'voices after filter')
-  state.availableVoices = filtered
-  state.still_speaking = false
-  // console.log('getVoices found', state.availableVoices)
-}
-export { getVoices }
-
-
-const onStartCallBack = () => {
-  console.log('   start speaking')
-  state.still_speaking = true
-}
-
-
-const onDoneCallBack = () => {
-  console.log('   done speaking')
-  state.still_speaking = false
-}
-
-
-const speakAnything = (func: string, phrase: string) => {
-  let s = state.settings
-
-  if (state.still_speaking) {
-    console.log('  ', func, 'still speaking')
-    return
-  }
-  
-  if( phrase == '') { 
-    console.log('  ', func, 'nothing to say')
-    return
-  }
-
-  console.log('speakAnything:')
-  console.log("   phrase: " + phrase)
-  // console.log("state.availableVoices: " + state.availableVoices)
-  console.log("   s.speechVoice: " + s.speechVoice)
-  console.log('   called from', func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier, ' rate', s.speechRate, 'and pitch', s.speechPitch)
-
-  state.still_speaking = true
-  Speech.speak(phrase, 
-    {
-      voice: state.availableVoices[s.speechVoice].identifier, 
-      pitch: s.speechPitch, 
-      rate: s.speechRate,
-      onStart: () => onStartCallBack(),
-      onDone: () => onDoneCallBack()
-    }
- )
-  // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
-  // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
-}
-export { speakAnything }
+import { speakAnything } from '../util/speech'
 
 
 export default function TabSpeechScreen() {
-
+ 
   const speak1 = () => {
     speakAnything('speak1', 'Chris, 1.2 miles at 4 oclock high.  Mark 2.0 miles at 12 oclock level.')
   }
@@ -101,21 +26,6 @@ export default function TabSpeechScreen() {
     speakAnything('speak5', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.')
   }
 
-
-// "en-AU-language"
-// "uk-UA-language"
-// "en-us-x-tpf-local"
-// "en-in-x-end-network"
-// "en-au-x-aua-network"
-// "en-GB-language"
-// "en-in-x-cxx-local"
-// "en-gb-x-gba-network"
-// "en-au-x-afh-network"
-// "en-us-x-sfg-network"
-// "en-au-x-aud-local"
-// "en-gb-x-gbc-network"
-// "en-us-x-sfg-local"
-// "en-in-x-ene-local"
 
   return (
     <View style={styles.container}>
@@ -152,3 +62,4 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 })
+

@@ -15,6 +15,7 @@ export default {
     speechVoice: 1,
     speechRate: 1,
     speechPitch: 1,
+    speechVolume: 1,
   },
   coords: {
     latitude: 1,
@@ -31,4 +32,5 @@ export default {
   next_thing_to_say: '',
   apidata: {},
   availableVoices: [],
+  speechVolume: 0.0,
 }

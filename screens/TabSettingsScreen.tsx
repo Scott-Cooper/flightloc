@@ -1,10 +1,10 @@
 import { Text, View } from '../components/Themed'
 import { StyleSheet, ScrollView, Switch, TextInput, Button} from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Slider from '@react-native-community/slider'
 import state from '../util/state'
 import { saveSettings } from '../util/storage'
-import { speakAnything } from './TabSpeechScreen'
+import { speakAnything } from '../util/speech'
 
 
 export default function TabSettingsScreen() {
@@ -24,6 +24,7 @@ export default function TabSettingsScreen() {
   const [speechVoice, setSpeechVoice] = useState(state.settings.speechVoice)
   const [speechRate, setSpeechRate] = useState(state.settings.speechRate)
   const [speechPitch, setSpeechPitch] = useState(state.settings.speechPitch)
+  const [speechVolume, setSpeechVolume] = useState(state.settings.speechVolume)
   const toggleSwitch1 = () => setIsIncludeCollision(previousState => !previousState)
   const toggleSwitch2 = () => setIsIncludeBearing(previousState => !previousState)
   const toggleSwitch3 = () => setIsIncludeCourse(previousState => !previousState)
@@ -47,6 +48,7 @@ export default function TabSettingsScreen() {
     state.settings.speechVoice = speechVoice
     state.settings.speechRate = speechRate
     state.settings.speechPitch = speechPitch
+    state.settings.speechVolume = speechVolume
     console.log("save_all_settings:  state.settings: ", state.settings)
     saveSettings()
   }
@@ -263,6 +265,21 @@ export default function TabSettingsScreen() {
             onValueChange={ (sliderSpeechPitch) => setSpeechPitch(sliderSpeechPitch) }
           />
           <Text style={styles.slider_values}>{speechPitch}</Text>
+        </View>
+
+        <Text style={styles.slider_label}>Speech Volume  (default 0.6)</Text>
+        <View style={styles.section}>
+          <Slider
+            style={styles.slider}
+            minimumValue={0.1}
+            maximumValue={1.0}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#a0a0a0"
+            value={speechVolume}
+            step={0.1}
+            onValueChange={ (sliderSpeechVolume) => setSpeechVolume(sliderSpeechVolume) }
+          />
+          <Text style={styles.slider_values}>{speechVolume}</Text>
         </View>
 
         <Button title="Save" onPress={save_all_settings} />

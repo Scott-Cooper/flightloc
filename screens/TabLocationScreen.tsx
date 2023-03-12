@@ -15,7 +15,7 @@ import React, { useState, useEffect } from 'react'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import state from '../util/state'
 import { convert_angle_to_spoken_digits, convert_bearing_to_spoken_clock } from '../util/misc'
-import { speakAnything }  from './TabSpeechScreen'
+import { speakAnything } from '../util/speech'
 import { getVolume, VolumeManager } from 'react-native-volume-manager'
 
 
@@ -65,19 +65,14 @@ export default function TabLocationScreen() {
     speakAnything('location', state.next_thing_to_say)
     // state.still_speaking = true
     // await VolumeManager.setVolume(vol)
-    setVolume(vol)
-  }
-
-
-  const setVolume = async (vol: number) => {
-    console.log('setVolume running  ', Date.now(), vol)
-    await VolumeManager.setVolume(vol)
+    
   }
 
 
   const get_gps = async () => {
-    console.log('-----------------------------------------')
+    console.log('---------------------------------------------')
     // console.log('get_gps running   ', Date.now())
+
     let location = await Location.watchPositionAsync(
       {
         // accuracy:Location.Accuracy.High,

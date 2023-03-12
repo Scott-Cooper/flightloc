@@ -19,6 +19,7 @@ const saveSettings = async () => {
   storeDataValue ('settings_speechVoice',  JSON.stringify(state.settings.speechVoice))
   storeDataValue ('settings_speechRate',  JSON.stringify(state.settings.speechRate))
   storeDataValue ('settings_speechPitch',  JSON.stringify(state.settings.speechPitch))
+  storeDataValue ('settings_speechVolume',  JSON.stringify(state.settings.speechVolume))
 }
 export { saveSettings }
 
@@ -44,6 +45,7 @@ const getSettings = async () => {
   state.settings.speechVoice = eval((await AsyncStorage.getItem('settings_speechVoice')) || '0')
   state.settings.speechRate = eval((await AsyncStorage.getItem('settings_speechRate')) || '1.6')
   state.settings.speechPitch = eval((await AsyncStorage.getItem('settings_speechPitch')) || '1.0')
+  state.settings.speechVolume = eval((await AsyncStorage.getItem('settings_speechVolume')) || '0.6')
   console.log('getSettings,', state.settings)
 }
 export { getSettings }
