@@ -16,7 +16,6 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
 import TabLocationScreen from '../screens/TabLocationScreen';
-import TabSpeechScreen from '../screens/TabSpeechScreen';
 import TabStuffScreen from '../screens/TabStuffScreen';
 import TabAboutScreen from '../screens/TabAboutScreen';
 import TabTestScreen from '../screens/TabTestScreen';
@@ -85,14 +84,6 @@ function BottomTabNavigator() {
         options={{
           title: 'Location',
           tabBarIcon: ({ color }) => <TabBarIcon name="thumb-tack" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabSpeech"
-        component={TabSpeechScreen}
-        options={{
-          title: 'Speech',
-          tabBarIcon: ({ color }) => <TabBarIcon name="volume-up" color={color} />,
         }}
       />
       <BottomTab.Screen

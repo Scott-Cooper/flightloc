@@ -1,6 +1,7 @@
 import { Text, View } from '../components/Themed'
 import { StyleSheet, Button } from 'react-native'
 import state from '../util/state'
+import { speakAnything } from '../util/speech'
 
 
 export default function TabStuffScreen() {
@@ -66,22 +67,41 @@ export default function TabStuffScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Make pretend pilots:</Text>
+    
+      <Text style={styles.title}>Make pretend pilot contacts:</Text>
+      <View style={styles.buttonStyle}>
+        <Button title="Field" onPress={fake_field} />
+        <Text>  </Text>
+        <Button title="Vortac" onPress={fake_vortac} />
+        <Text>  </Text>
+        <Button title="Norwich" onPress={fake_norwich} />
+        <View style={styles.separator} />
+      </View>
+      <View style={styles.buttonStyle}>
+        <Button title="Kevin" onPress={make_fake_kevin} />
+        <Text>  </Text>
+        <Button title="Karen" onPress={make_fake_karen} />
+      </View>
+
       <View style={styles.separator} />
-      <Button title="Fake Vortac" onPress={fake_vortac} />
+      <Text style={styles.title}>Delete all pilot contacts:</Text>
+      <View style={styles.buttonStyle}>
+        <Button title="Delete all" onPress={fake_clear} />
+      </View>
+ 
       <View style={styles.separator} />
-      <Button title="Fake Field" onPress={fake_field} />
-      <View style={styles.separator} />
-      <Button title="Fake Norwich" onPress={fake_norwich} />
-      <View style={styles.separator} />
-      <Button title="Fake Kevin" onPress={make_fake_kevin} />
-      <View style={styles.separator} />
-      <Button title="Fake Karen" onPress={make_fake_karen} />
-      <View style={styles.separator} />
-      <View style={styles.separator} />
-      <View style={styles.separator} />
-      <Button title="Clear all records" onPress={fake_clear} />
-    </View>
+      <Text style={styles.title}>Test audio:</Text>
+      <View style={styles.buttonStyle}>
+        <Button title="Contacts" onPress={() => { speakAnything('TabSpeechScreen', 'Chris, 1.2 miles at 4 oclock high.  Mark 2.0 miles at 12 oclock level.')}}/>
+        <Text>  </Text>
+        <Button title="LZ" onPress={() => { speakAnything('TabSpeechScreen', 'Hey ' + state.settings.user + ', landing zone is 2.4 miles at 7 oclock.  24 minutes till sunset.')}}/>
+        <Text>  </Text>
+        <Button title="Danger" onPress={() => { speakAnything('TabSpeechScreen', 'Oh shit.  danger, danger, danger, death is very likely, turn or do something you stupid dip shit.')}}/>
+        <Text>  </Text>
+        <Button title="No contact" onPress={() => { speakAnything('TabSpeechScreen', 'No contacts.')}}/>
+      </View>
+    
+    </View>    
   )
 
 }
@@ -99,6 +119,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  buttonStyle: {
+    flexDirection:"row", 
+    margin: 10,
+  },
   separator: {
     marginVertical: 8,
     width: '100%',
@@ -108,3 +132,4 @@ const styles = StyleSheet.create({
     fontFamily: 'space-mono',
   },
 })
+

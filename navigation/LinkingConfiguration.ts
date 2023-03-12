@@ -30,11 +30,6 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabLocationScreen: 'location',
             },
           },
-          TabSpeech: {
-            screens: {
-              TabSpeechScreen: 'speech',
-            },
-          },
           TabStuff: {
             screens: {
               TabStuffScreen: 'stuff',
