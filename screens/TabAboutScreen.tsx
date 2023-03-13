@@ -32,7 +32,7 @@ export default function TabAboutScreen() {
         <Text style={styles.paragraph}>All of these devices emulate a volume button press, and can be found on Amazon.</Text>
 
         <Text style={styles.section}>Usage</Text>
-        <Text style={styles.paragraph}>Adjust and test volume on the Speech tab.</Text>
+        <Text style={styles.paragraph}>Adjust and test volume on the Settings tab.</Text>
         <Text style={styles.paragraph}>Confirm any bluetooth shutter button is turned on, paired and connected.</Text>
         <Text style={styles.paragraph}>Press the volume buttons or bluetooth shutter button 3 times quickly to hear information about nearby contacts.</Text>
         <Text style={styles.paragraph}>Use the Stuff tab to create fake pilots for testing.</Text>

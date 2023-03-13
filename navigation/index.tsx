@@ -15,7 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabHomeScreen from '../screens/TabHomeScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
-import TabLocationScreen from '../screens/TabLocationScreen';
+import TabLocationScreen from '../screens/TabHomeScreen';
 import TabStuffScreen from '../screens/TabStuffScreen';
 import TabAboutScreen from '../screens/TabAboutScreen';
 import TabTestScreen from '../screens/TabTestScreen';
@@ -76,14 +76,6 @@ function BottomTabNavigator() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabLocation"
-        component={TabLocationScreen}
-        options={{
-          title: 'Location',
-          tabBarIcon: ({ color }) => <TabBarIcon name="thumb-tack" color={color} />,
         }}
       />
       <BottomTab.Screen
