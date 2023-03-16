@@ -1,8 +1,7 @@
 import * as Speech from 'expo-speech'
 import state from '../util/state'
 import { VolumeManager } from 'react-native-volume-manager'
-import { Audio } from 'expo-av';
-// import React, { useState } from 'react'
+import { Audio } from 'expo-av'
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -11,7 +10,7 @@ const getVolume = async () => {
   // console.log('getVolume running  ', Date.now(), vol)
   console.log('getVolume test  ', vol.toString())
   state.oldSpeechVolume = Number(vol.toString())
-  // SystemSetting.getVolume().then(currentVolume => console.log(currentVolume));
+  // SystemSetting.getVolume().then(currentVolume => console.log(currentVolume))
   return vol
 }
 
@@ -30,9 +29,9 @@ const setVolume = async (vol: number) => {
 
 ///////////////////////////////////////////////////////////////////////////////
 const getVoices = async () => {
+  // Because of a bug in getAvailableVoicesAsync, we have to call it twice with
+  // a short delay between calls.  Why this works is a mystery to me.  WTF
 
-  // Because of a bug in getAvailableVoicesAsync, we have to call it twice with a short 
-  // delay between calls.  Why this works is a mystery to me.  WTF
   await Speech.getAvailableVoicesAsync()
   
   await new Promise((resolve) => {
@@ -40,7 +39,6 @@ const getVoices = async () => {
       resolve(null)
     }, 1000)
   })
-
 
   const availableVoices = await Speech.getAvailableVoicesAsync()
   // console.log('getVoices voices', availableVoices)
@@ -53,55 +51,37 @@ const getVoices = async () => {
   console.log('getVoices found', filtered.length, 'voices after filter')
   state.availableVoices = filtered
   state.still_speaking = false
-  // console.log('getVoices found', state.availableVoices)
 }
 export { getVoices }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 const speakAnything = async (func: string, phrase: string) => {
-  let s = state.settings
-  // const [sound, setSound] = useState();
-  // const sound = new Audio.Sound()
+  // Because Speech.speak does not duck the volume of other applications
+  // correctly, we first start playing a single sample silent mp3.  Then in
+  // the callback of the Speech.speak we unload the mp3 and the normal volume
+  // of background music app resumes.
 
+  let s = state.settings
+  let duckAudio = new Audio.Sound()
 
   const onDoneCallBack = () => {
     console.log('   done speaking')
-    // try {
-    //   console.log('   unload duck:')
-    //   sound.unloadAsync();
-    // } catch (error) {
-    //   console.log('   Error during unload duck')
-    // }
+    duckAudio.unloadAsync()
   
     // setVolume(state.oldSpeechVolume)
     state.still_speaking = false
   }
 
-
   if (state.still_speaking) {
-    console.log('  ', func, 'still speaking')
+    // console.log('  ', func, 'still speaking')
     return
   }
   
   if( phrase == '') { 
-    console.log('  ', func, 'nothing to say')
+    // console.log('  ', func, 'nothing to say')
     return
   }
-
-//   try {
-//     console.log('   load duck:')
-//     await sound.loadAsync(require('./assets/shortest_possible.mp3'));
-//   } catch (error) {
-//     console.log('   Error during load duck')
-//   }
-
-//   try {
-//     console.log('   play duck')
-//     await sound.playAsync();
-//   } catch (error) {
-//     console.log('   Error during play duck')
-//   }
 
   state.still_speaking = true
   console.log('speakAnything')
@@ -110,6 +90,9 @@ const speakAnything = async (func: string, phrase: string) => {
   console.log("   s.speechVoice: " + s.speechVoice)
   console.log('   called from', func, 'using voice', s.speechVoice, state.availableVoices[s.speechVoice].identifier, ' rate', s.speechRate, 'and pitch', s.speechPitch)
 
+  await duckAudio.loadAsync(require('../assets/sounds/shortest_possible.mp3'))
+  await duckAudio.playAsync()
+
   Speech.speak(phrase, 
     {
       voice: state.availableVoices[s.speechVoice].identifier, 
@@ -117,12 +100,12 @@ const speakAnything = async (func: string, phrase: string) => {
       rate: s.speechRate,
       onDone: () => onDoneCallBack()
     }
- )
+  )
   // Speech.speak(phrase, {voice: "en-us-x-iom-local", pitch: s.speechPitch, rate: s.speechRate})
   // Speech.speak(phrase, {pitch: s.speechPitch, rate: s.speechRate})
 }
 export { speakAnything }
 
 
-
 ///////////////////////////////////////////////////////////////////////////////
+
