@@ -6,26 +6,25 @@ import { Audio } from 'expo-av'
 
 ///////////////////////////////////////////////////////////////////////////////
 const getVolume = async () => {
-  let vol = await VolumeManager.getVolume()
-  // console.log('getVolume running  ', Date.now(), vol)
-  console.log('getVolume test  ', vol.toString())
-  state.oldSpeechVolume = Number(vol.toString())
-  // SystemSetting.getVolume().then(currentVolume => console.log(currentVolume))
-  return vol
+  // console.log('getVolume running  ', Date.now(), vol.toString())
+  if (! state.still_speaking) {
+    let vol = await VolumeManager.getVolume()
+    state.oldVolume = Number(vol.toString())
+  }
 }
+export { getVolume }
 
 
 ///////////////////////////////////////////////////////////////////////////////
-const setVolume = async (vol: number) => {
-  // console.log('setVolume running  ', Date.now(), vol)
-  // await VolumeManager.setVolume(vol)
-  await VolumeManager.setVolume(vol, {
+const setVolume = async () => {
+  // console.log('setVolume running  ', Date.now(), state.oldVolume)
+  await VolumeManager.setVolume(state.oldVolume, {
     type: 'music',    // defaults to "music" (Android only)
-    showUI: false,    // defaults to false, can surpress the native UI Volume Toast (iOS & Android)
+    showUI: true,    // defaults to false, can surpress the native UI Volume Toast (iOS & Android)
     playSound: false, // defaults to false (Android only)
   })
 }
-
+export { setVolume }
 
 ///////////////////////////////////////////////////////////////////////////////
 const getVoices = async () => {
@@ -68,8 +67,7 @@ const speakAnything = async (func: string, phrase: string) => {
   const onDoneCallBack = () => {
     console.log('   done speaking')
     duckAudio.unloadAsync()
-  
-    // setVolume(state.oldSpeechVolume)
+    setVolume()
     state.still_speaking = false
   }
 

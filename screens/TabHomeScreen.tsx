@@ -16,8 +16,8 @@ import React, { useState, useEffect } from 'react'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
 import state from '../util/state'
 import { convert_angle_to_spoken_digits, convert_bearing_to_spoken_clock } from '../util/misc'
-import { speakAnything } from '../util/speech'
-import { getVolume, VolumeManager } from 'react-native-volume-manager'
+import { getVolume, setVolume, speakAnything } from '../util/speech'
+import { VolumeManager } from 'react-native-volume-manager'
 var pkg = require('../app.json')
 
 
@@ -62,13 +62,9 @@ export default function TabHomeScreen() {
 
   const check_vol_buttons = (vol: number) => {
   // const check_vol_buttons = async (vol: number) => {
-    let newvol = vol.toFixed(1).toString()
-    console.log("check_vol_button " + vol + '-------------------------------------------------------------------------')
-    // speakAnything('location volume test', "Vol button was pressed." + newvol)
+    // console.log("check_vol_button " + vol + '-------------------------------------------------------------------------')
     speakAnything('location', state.next_thing_to_say)
-    // state.still_speaking = true
-    // await VolumeManager.setVolume(vol)
-    
+    setVolume()
   }
 
 
@@ -97,6 +93,10 @@ export default function TabHomeScreen() {
         fetch_api()
       }
     )
+
+    // Save off current volume level.
+    getVolume()
+
     // console.log('get_gps complete   ' + Date.now())
   }
 
@@ -184,7 +184,7 @@ export default function TabHomeScreen() {
       text_spoken_apidata += p[key]['user'] + ' ' + p[key]['dis'].toFixed(1) + ' miles'
       if (state.settings.isIncludeBearing) {
         if (state.settings.isRelativeClock) {
-          text_spoken_apidata += ", at your " + convert_bearing_to_spoken_clock(p[key]['bearing'])
+          text_spoken_apidata += ", at " + convert_bearing_to_spoken_clock(p[key]['bearing'])
         } else {
           text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(p[key]['bearing'])
         }
@@ -194,9 +194,9 @@ export default function TabHomeScreen() {
       }
       if (state.settings.isIncludeAltitude) {
         let ralt = p[key]['alt'] - (location["coords"]["altitude"] * 3.28084) 
-        let salt = ', level'
-        if (ralt < -200) { salt = ', low' }
-        if (ralt > 200) { salt = ', high' }
+        let salt = ' level'
+        if (ralt < -200) { salt = ' low' }
+        if (ralt > 200) { salt = ' high' }
         text_spoken_apidata += salt
       }
       text_spoken_apidata += ".\n"

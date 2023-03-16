@@ -32,5 +32,5 @@ export default {
   next_thing_to_say: '',
   apidata: {},
   availableVoices: [],
-  speechVolume: 0.0,
+  oldVolume: 0.0,
 }
