@@ -30,7 +30,7 @@ export default {
   },
   still_speaking: false,
   next_thing_to_say: '',
-  apidata: {},
+  apidata: [],
   availableVoices: [],
   oldVolume: 0.0,
 }

@@ -13,7 +13,7 @@ expo install expo-av \
 expo install @react-native-community/slider \
 expo install @react-native-async-storage/async-storage \
 expo install react-native-maps \
-expo install react-native-volume-manager \
+expo install react-native-volume-manager
 
 npm install -g eas-cli \
 Increment version number in app.json \
@@ -30,13 +30,10 @@ eas login \
 eas whoami \
 eas build --profile development --platform android \
 install from qr code \
-expo start --dev-client \
-last build:  https://expo.dev/accounts/xbass/projects/flightloc/builds/5aba809e-f982-4230-90cb-4192b468e88d
+expo start --dev-client
 
 ## Latest builds:
-custom expo development client: https://expo.dev/accounts/xbass/projects/flightloc/builds/5aba809e-f982-4230-90cb-4192b468e88d \
-android app preview: https://expo.dev/accounts/xbass/projects/flightloc/builds/5aba809e-f982-4230-90cb-4192b468e88d \
-ios app preview: not available yet
+http://dullbits.com/misc/flightloc/
 
 ## Random usefull links:
 https://reactnativeelements.com/docs \

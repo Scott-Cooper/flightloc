@@ -21,6 +21,20 @@ import { VolumeManager } from 'react-native-volume-manager'
 var pkg = require('../app.json')
 
 
+      
+// Convert from dict of dict, to sorted array of dict
+function orderByDistance( input: string ) {
+  let key = "dis"
+  let r = []
+  let contacts = Object.keys( input ).map( key => ({ key, value: input[key] }) ).sort( (a, b) => a.value[key] - b.value[key] )
+  for (var contact of contacts) {
+    contact["value"]["key"] = contact["key"] 
+    r.push (contact["value"])
+  }
+  return r
+}
+
+
 export default function TabHomeScreen() {
   const [location, setLocation] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
@@ -137,8 +151,8 @@ export default function TabHomeScreen() {
       // console.log('fetch_api ok', response.ok)
 
       const apidata = await response.json()
-      state.apidata = apidata
-      console.log('fetch_api:', apidata)
+      state.apidata = orderByDistance( apidata )
+      // console.log('fetch_api:', state.apidata)
     // } catch (e) {
     //   console.log('fetch_api error:', e)
     // }
@@ -176,30 +190,33 @@ export default function TabHomeScreen() {
     text_time = JSON.stringify(location["timestamp"])
     text_apidata = JSON.stringify(state.apidata)
 
-    const p = state.apidata
-    for (let key in p) {
-      // var tkey = key as keyof typeof p
-      text_pretty_apidata += p[key]['user'] + " " + p[key]['dis'].toFixed(1) + " miles\n    bearing " + p[key]['bearing'].toFixed(0) + "\n    course " + p[key]['heading'].toFixed(0) + "\n    at " + p[key]['speed'].toFixed(0) + " mph\n"
+    const contacts = state.apidata
+    for (let i = 0; i < contacts.length; i++) {
+      let contact = contacts[i]
+      // console.log("contact", contact)
+      text_pretty_apidata += contact['user'] + " " + contact['dis'].toFixed(1) + " miles\n    bearing " + contact['bearing'].toFixed(0) + "\n    course " + contact['heading'].toFixed(0) + "\n    at " + contact['speed'].toFixed(0) + " mph\n"
 
-      text_spoken_apidata += p[key]['user'] + ' ' + p[key]['dis'].toFixed(1) + ' miles'
-      if (state.settings.isIncludeBearing) {
-        if (state.settings.isRelativeClock) {
-          text_spoken_apidata += ", at " + convert_bearing_to_spoken_clock(p[key]['bearing'])
-        } else {
-          text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(p[key]['bearing'])
+      if (i < state.settings.maxContacts) {
+        text_spoken_apidata += contact['user'] + ' ' + contact['dis'].toFixed(1) + ' miles'
+        if (state.settings.isIncludeBearing) {
+          if (state.settings.isRelativeClock) {
+            text_spoken_apidata += ", at " + convert_bearing_to_spoken_clock(contact['bearing'])
+          } else {
+            text_spoken_apidata += ", bearing " + convert_angle_to_spoken_digits(contact['bearing'])
+          }
         }
+        if (state.settings.isIncludeCourse) {
+          text_spoken_apidata += ", course " + convert_angle_to_spoken_digits(contact['heading'])
+        }
+        if (state.settings.isIncludeAltitude) {
+          let ralt = contact['alt'] - (location["coords"]["altitude"] * 3.28084) 
+          let salt = ' level'
+          if (ralt < -200) { salt = ' low' }
+          if (ralt > 200) { salt = ' high' }
+          text_spoken_apidata += salt
+        }
+        text_spoken_apidata += ".\n"
       }
-      if (state.settings.isIncludeCourse) {
-        text_spoken_apidata += ", course " + convert_angle_to_spoken_digits(p[key]['heading'])
-      }
-      if (state.settings.isIncludeAltitude) {
-        let ralt = p[key]['alt'] - (location["coords"]["altitude"] * 3.28084) 
-        let salt = ' level'
-        if (ralt < -200) { salt = ' low' }
-        if (ralt > 200) { salt = ' high' }
-        text_spoken_apidata += salt
-      }
-      text_spoken_apidata += ".\n"
     }
 
     if(text_spoken_apidata == '') { text_spoken_apidata = 'No contacts' }

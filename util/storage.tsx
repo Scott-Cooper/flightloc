@@ -40,7 +40,7 @@ const getSettings = async () => {
   state.settings.maxDistance = eval((await AsyncStorage.getItem('settings_maxDistance')) || '25')
   state.settings.maxLag = eval((await AsyncStorage.getItem('settings_maxLag')) || '30.0')
   state.settings.minSpeed = eval((await AsyncStorage.getItem('settings_minSpeed')) || '3.0')
-  state.settings.maxContacts = eval((await AsyncStorage.getItem('settings_maxContacts')) || '10')
+  state.settings.maxContacts = eval((await AsyncStorage.getItem('settings_maxContacts')) || '3')
   state.settings.speechVoice = eval((await AsyncStorage.getItem('settings_speechVoice')) || '0')
   state.settings.speechRate = eval((await AsyncStorage.getItem('settings_speechRate')) || '1.6')
   state.settings.speechPitch = eval((await AsyncStorage.getItem('settings_speechPitch')) || '1.0')

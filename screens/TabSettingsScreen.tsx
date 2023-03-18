@@ -205,12 +205,12 @@ export default function TabSettingsScreen() {
           <Text style={styles.slider_values}>{minSpeed}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Maximum contacts to report (default 10)</Text>
+        <Text style={styles.slider_label}>Maximum contacts to report (default 3)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
             minimumValue={1}
-            maximumValue={30}
+            maximumValue={10}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
             value={maxContacts}
