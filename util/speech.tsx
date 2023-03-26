@@ -6,10 +6,11 @@ import { Audio } from 'expo-av'
 
 ///////////////////////////////////////////////////////////////////////////////
 const getVolume = async () => {
-  // console.log('getVolume running  ', Date.now(), vol.toString())
+  console.log('getVolume running  ', Date.now())
   if (! state.still_speaking) {
     let vol = await VolumeManager.getVolume()
     state.oldVolume = Number(vol.toString())
+    console.log('gotVolume  ', Date.now(), vol)
   }
 }
 export { getVolume }
@@ -17,19 +18,22 @@ export { getVolume }
 
 ///////////////////////////////////////////////////////////////////////////////
 const setVolume = async () => {
-  // console.log('setVolume running  ', Date.now(), state.oldVolume)
-  await VolumeManager.setVolume(state.oldVolume, {
-    type: 'music',    // defaults to "music" (Android only)
-    showUI: true,    // defaults to false, can surpress the native UI Volume Toast (iOS & Android)
-    playSound: false, // defaults to false (Android only)
-  })
+  console.log('setVolume running  ', Date.now(), state.oldVolume)
+  await VolumeManager.setVolume(state.oldVolume)
+  // await VolumeManager.setVolume(state.oldVolume, {
+  //   type: 'music',    // defaults to "music" (Android only)
+  //   showUI: false,     // defaults to false, can surpress the native UI Volume Toast (iOS & Android)
+  //   playSound: false, // defaults to false (Android only)
+  // })
 }
 export { setVolume }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 const getVoices = async () => {
   // Because of a bug in getAvailableVoicesAsync, we have to call it twice with
-  // a short delay between calls.  Why this works is a mystery to me.  WTF
+  // a short delay between calls.  Why this works is a mystery to me.  Different
+  // devices require more time.  So be patient.  Also, WTF
 
   await Speech.getAvailableVoicesAsync()
   
@@ -59,16 +63,16 @@ const speakAnything = async (func: string, phrase: string) => {
   // Because Speech.speak does not duck the volume of other applications
   // correctly, we first start playing a single sample silent mp3.  Then in
   // the callback of the Speech.speak we unload the mp3 and the normal volume
-  // of background music app resumes.
+  // of background music app resumes.  Kinda janky but it works.
 
   let s = state.settings
   let duckAudio = new Audio.Sound()
 
   const onDoneCallBack = () => {
     console.log('   done speaking')
+    state.still_speaking = false
     duckAudio.unloadAsync()
     setVolume()
-    state.still_speaking = false
   }
 
   if (state.still_speaking) {

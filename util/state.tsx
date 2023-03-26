@@ -7,7 +7,7 @@ export default {
     isIncludeCourse: true,
     isIncludeAltitude: true,
     isRelativeClock: true,
-    gpsUpdatesPerMinute: 1,
+    gpsUpdateTime: 1,
     maxDistance: 1,
     maxLag: 1,
     minSpeed: 1,

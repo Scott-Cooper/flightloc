@@ -16,7 +16,7 @@ export default function TabSettingsScreen() {
   const [isIncludeCourse, setIsIncludeCourse] = useState(state.settings.isIncludeCourse)
   const [isIncludeAltitude, setIsIncludeAltitude] = useState(state.settings.isIncludeAltitude)
   const [isRelativeClock, setIsRelativeClock] = useState(state.settings.isRelativeClock)
-  const [gpsUpdatesPerMinute, setGpsUpdatesPerMinute] = useState(state.settings.gpsUpdatesPerMinute)
+  const [gpsUpdateTime, setGpsUpdateTime] = useState(state.settings.gpsUpdateTime)
   const [maxDistance, setMaxDistance] = useState(state.settings.maxDistance)
   const [maxLag, setMaxLag] = useState(state.settings.maxLag)
   const [minSpeed, setMinSpeed] = useState(state.settings.minSpeed)
@@ -39,7 +39,7 @@ export default function TabSettingsScreen() {
     state.settings.isIncludeCourse = isIncludeCourse
     state.settings.isIncludeAltitude = isIncludeAltitude
     state.settings.isRelativeClock = isRelativeClock
-    state.settings.gpsUpdatesPerMinute = gpsUpdatesPerMinute
+    state.settings.gpsUpdateTime = gpsUpdateTime
     state.settings.maxDistance = maxDistance
     state.settings.maxLag = maxLag
     state.settings.minSpeed = minSpeed
@@ -145,19 +145,19 @@ export default function TabSettingsScreen() {
 
         <View style={styles.separator} lightColor="#333" darkColor="#444" />
 
-        <Text style={styles.slider_label}>Number of GPS updates per minute.  Higher values will decrease lag, but increase battery drain. </Text>
+        <Text style={styles.slider_label}>Seconds between GPS updates.  Lower values will decrease lag, but increase battery drain. Requires app reload. (default 3.0 seconds)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
-            minimumValue={3}
-            maximumValue={30}
+            minimumValue={0.6}
+            maximumValue={6.0}
             minimumTrackTintColor="#FFFFFF"
             maximumTrackTintColor="#a0a0a0"
-            value={gpsUpdatesPerMinute}
-            step={1}
-            onValueChange={ (sliderGpsUpdatesPerMinute) => setGpsUpdatesPerMinute(sliderGpsUpdatesPerMinute) }
+            value={gpsUpdateTime}
+            step={0.1}
+            onValueChange={ (sliderGpsUpdateTime) => setGpsUpdateTime(sliderGpsUpdateTime) }
           />
-          <Text style={styles.slider_values}>{gpsUpdatesPerMinute}</Text>
+          <Text style={styles.slider_values}>{gpsUpdateTime.toFixed(1)}</Text>
         </View>
 
         <Text style={styles.slider_label}>Ignore contacts beyond this distance (default 25 miles)</Text>
@@ -220,7 +220,7 @@ export default function TabSettingsScreen() {
           <Text style={styles.slider_values}>{maxContacts}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Speech Voice  (default 1)</Text>
+        <Text style={styles.slider_label}>Speech Voice  (default 0)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
@@ -235,7 +235,7 @@ export default function TabSettingsScreen() {
           <Text style={styles.slider_values}>{speechVoice}</Text>
         </View>
 
-        <Text style={styles.slider_label}>Speech Rate  (default 1.0)</Text>
+        <Text style={styles.slider_label}>Speech Rate  (default 1.3)</Text>
         <View style={styles.section}>
           <Slider
             style={styles.slider}
@@ -247,7 +247,7 @@ export default function TabSettingsScreen() {
             step={0.1}
             onValueChange={ (sliderSpeechRate) => setSpeechRate(sliderSpeechRate) }
           />
-          <Text style={styles.slider_values}>{speechRate}</Text>
+          <Text style={styles.slider_values}>{speechRate.toFixed(1)}</Text>
         </View>
 
         <Text style={styles.slider_label}>Speech Pitch  (default 1.0)</Text>
@@ -262,7 +262,7 @@ export default function TabSettingsScreen() {
             step={0.1}
             onValueChange={ (sliderSpeechPitch) => setSpeechPitch(sliderSpeechPitch) }
           />
-          <Text style={styles.slider_values}>{speechPitch}</Text>
+          <Text style={styles.slider_values}>{speechPitch.toFixed(1)}</Text>
         </View>
 
         <Button title="Save" onPress={save_all_settings} />

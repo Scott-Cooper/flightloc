@@ -64,10 +64,10 @@ export default function TabHomeScreen() {
         // music, system, ring, alarm, notification
       })
 
-      console.log('setInterval started')
+      console.log('set gpsUpdateTime to', state.settings.gpsUpdateTime, 'seconds')
       const getLoc = setInterval(async () => {
         get_gps()
-      }, 3000)
+      }, state.settings.gpsUpdateTime * 1000)
 
     })()
 
@@ -194,7 +194,7 @@ export default function TabHomeScreen() {
     for (let i = 0; i < contacts.length; i++) {
       let contact = contacts[i]
       // console.log("contact", contact)
-      text_pretty_apidata += contact['user'] + " " + contact['dis'].toFixed(1) + " miles\n    bearing " + contact['bearing'].toFixed(0) + "\n    course " + contact['heading'].toFixed(0) + "\n    at " + contact['speed'].toFixed(0) + " mph\n"
+      text_pretty_apidata += contact['user'] + " " + contact['dis'].toFixed(1) + " miles\n    bearing " + contact['bearing'].toFixed(0) + ",    course " + contact['heading'].toFixed(0) + "\n    at " + contact['speed'].toFixed(0) + " mph\n"
 
       if (i < state.settings.maxContacts) {
         text_spoken_apidata += contact['user'] + ' ' + contact['dis'].toFixed(1) + ' miles'
@@ -258,8 +258,8 @@ export default function TabHomeScreen() {
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
 
         <Text style={styles.gps}>{text_pretty_apidata}</Text>
-        <View style={styles.separator}/>
-        <Text style={styles.gps}>{text_spoken_apidata}</Text>
+        {/* <View style={styles.separator}/>
+        <Text style={styles.gps}>{text_spoken_apidata}</Text> */}
 
         {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.gps}>api_data: {text_apidata}</Text> */}
